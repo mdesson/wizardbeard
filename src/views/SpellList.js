@@ -1,11 +1,13 @@
 import React from 'react'
 import Card from '../components/Card.js'
+import './SpellList.css'
+import spells from '../mockdata.js'
 
 const SpellList = () => {
   var spell = {
     name: 'Acid Arrow',
     school: 'Evocation',
-    duration: 'instantaneous',
+    duration: 'Instantaneous',
     ritual: 'no',
     material: 'Powdered rhubarb leaf and an adder’s stomach.',
     components: ['V', 'S', 'M'],
@@ -16,10 +18,15 @@ const SpellList = () => {
     description:
       'A shimmering green arrow streaks toward a target within range and bursts in a spray of acid. Make a ranged spell attack against the target. On a hit, the target takes 4d4 acid damage immediately and 2d4 acid damage at the end of its next turn. On a miss, the arrow splashes the target with acid for half as much of the initial damage and no damage at the end of its next turn.'
   }
+
   return (
     <div>
-      <h1>YES!</h1>
-      <Card spell={spell} />
+      <h1>One day I will be a searchbar!</h1>
+      <div className="Spell-list">
+        {spells.map(s => (
+          <Card spell={s} />
+        ))}
+      </div>
     </div>
   )
 }

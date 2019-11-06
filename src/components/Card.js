@@ -5,7 +5,7 @@ const Card = ({ spell }) => {
   return (
     <div className="Card-container">
       <div className="Card-title">
-        <span>{schoolEmojis[spell.school]}</span>
+        <span title={spell.school}>{schoolEmojis[spell.school]}</span>
         <span>{spell.name}</span>
       </div>
       <div className="Card-stats">
@@ -13,7 +13,9 @@ const Card = ({ spell }) => {
         <div className="Card-cast-time">{spell.casting_time}</div>
         <div className="Card-duration">{spell.duration}</div>
         <div className="Card-range">{spell.range}</div>
-        {spell.concentration === 'yes' && <div className="Card-concentration"></div>}
+        {spell.concentration === 'yes' && (
+          <div className="Card-concentration"></div>
+        )}
       </div>
       <div className="Card-description">{spell.description}</div>
     </div>
