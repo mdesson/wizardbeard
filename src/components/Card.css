@@ -1,0 +1,7 @@
+.Card-container {
+  display: flex;
+  background-color: white;
+  color: #282c34;
+  border-radius: 25px;
+  padding: 20px;
+}
