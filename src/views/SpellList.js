@@ -12,7 +12,7 @@ const SpellList = () => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
-      const result = await axios('https://api.open5e.com/spells/?dnd_class=Wizard&format=json')
+      const result = await axios('https://api.open5e.com/spells/?format=json')
       setSpells(result.data.results)
       setFilteredSpells(result.data.results)
       setIsLoading(false)

@@ -54,16 +54,16 @@ const SpellFilter = ({ spells, onChange }) => {
     {
       label: 'Level',
       options: [
-        { value: -1, label: 'Cantrip', field: 'level' },
-        { value: 1, label: 'Level 1', field: 'level' },
-        { value: 2, label: 'Level 2', field: 'level' },
-        { value: 3, label: 'Level 3', field: 'level' },
-        { value: 4, label: 'Level 4', field: 'level' },
-        { value: 5, label: 'Level 5', field: 'level' },
-        { value: 6, label: 'Level 6', field: 'level' },
-        { value: 7, label: 'Level 7', field: 'level' },
-        { value: 8, label: 'Level 8', field: 'level' },
-        { value: 9, label: 'Level 9', field: 'level' }
+        { value: 0, label: 'Cantrip', field: 'level_int' },
+        { value: 1, label: 'Level 1', field: 'level_int' },
+        { value: 2, label: 'Level 2', field: 'level_int' },
+        { value: 3, label: 'Level 3', field: 'level_int' },
+        { value: 4, label: 'Level 4', field: 'level_int' },
+        { value: 5, label: 'Level 5', field: 'level_int' },
+        { value: 6, label: 'Level 6', field: 'level_int' },
+        { value: 7, label: 'Level 7', field: 'level_int' },
+        { value: 8, label: 'Level 8', field: 'level_int' },
+        { value: 9, label: 'Level 9', field: 'level_int' }
       ]
     },
     {
