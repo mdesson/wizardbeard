@@ -70,3 +70,10 @@
 .Card-description {
   /* none for now */
 }
+
+.Card-class {
+  text-align: left;
+  font-style: italic;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}

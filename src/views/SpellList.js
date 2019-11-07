@@ -13,11 +13,14 @@ const SpellList = () => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
-      const result = await axios(
-        'https://api.open5e.com/spells/?format=json&limit=2000'
-      )
-      setSpells(result.data.results)
-      setFilteredSpells(result.data.results)
+      const result = await axios('https://api.open5e.com/spells/?format=json&limit=2000')
+      // add array of dnd classes
+      const allSpells = result.data.results.map(spell => {
+        return { ...spell, class: spell.dnd_class.split(', ') }
+      })
+
+      setSpells(allSpells)
+      setFilteredSpells(allSpells)
       setIsLoading(false)
     }
     fetchData()
@@ -27,8 +30,7 @@ const SpellList = () => {
     <div>
       <div className="Description-text">
         <div>
-          Welcome to <b>Wizard Beard</b>! The most convenient place on this
-          plane to manage your spells!
+          Welcome to <b>Wizard Beard</b>! The most convenient place on this plane to manage your spells!
         </div>
       </div>
       {isLoading ? (
@@ -40,9 +42,7 @@ const SpellList = () => {
             {filteredSpells.length ? (
               filteredSpells.map(s => <Card key={s.name} spell={s} />)
             ) : (
-              <div className="Description-text">
-                Alas, such a spell has yet to be crafted.
-              </div>
+              <div className="Description-text">Alas, such a spell has yet to be crafted.</div>
             )}
           </div>
         </div>

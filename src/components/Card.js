@@ -4,8 +4,7 @@ import './Card.css'
 
 const Card = ({ spell }) => {
   const [showFullDesc, setShowFulLDesc] = useState(false)
-  const shortDesc =
-    spell.desc.split('.')[0] + '.' + spell.desc.split('.')[1] + '.'
+  const shortDesc = spell.desc.split('.')[0] + '.' + spell.desc.split('.')[1] + '.'
   const fullDesc = marked(spell.desc)
 
   const showHideDesc = () => setShowFulLDesc(!showFullDesc)
@@ -22,9 +21,7 @@ const Card = ({ spell }) => {
           <div className="Card-cast-time">{spell.casting_time}</div>
           <div className="Card-duration">{spell.duration}</div>
           <div className="Card-range">{spell.range}</div>
-          {spell.concentration === 'yes' && (
-            <div className="Card-concentration"></div>
-          )}
+          {spell.concentration === 'yes' && <div className="Card-concentration"></div>}
         </div>
         <div
           className="Card-description"
@@ -32,6 +29,7 @@ const Card = ({ spell }) => {
             __html: showFullDesc ? fullDesc : shortDesc
           }}
         />
+        <div className="Card-class">{spell.dnd_class}</div>
       </div>
       <div className="Show-hide" onClick={showHideDesc}>
         {showFullDesc ? 'Show less' : 'Show more'}
