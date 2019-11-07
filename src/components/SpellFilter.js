@@ -7,6 +7,7 @@ const makeFilter = results => {
 
   if (!results) return filter
 
+  // eslint-disable-next-line
   results.map(result => {
     if (result.field) {
       if (filter[result.field]) filter[result.field].push(result.value)
