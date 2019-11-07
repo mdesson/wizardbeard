@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Select from 'react-select'
 
 // create filter for spells, to be passed to filter function

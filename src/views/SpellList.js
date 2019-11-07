@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react'
-import Select from 'react-select'
+import axios from 'axios'
 import Card from '../components/Card.js'
 import SpellFilter from '../components/SpellFilter.js'
 import './SpellList.css'
-import spells from '../mockdata.js'
 
 const SpellList = () => {
+  const [spells, setSpells] = useState([])
   const [filteredSpells, setFilteredSpells] = useState(spells)
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true)
+      const result = await axios('https://api.open5e.com/spells/?dnd_class=Wizard&format=json')
+      setSpells(result.data.results)
+      setFilteredSpells(result.data.results)
+      setIsLoading(false)
+    }
+    fetchData()
+  }, [])
 
   return (
     <div>
@@ -15,14 +27,20 @@ const SpellList = () => {
           Welcome to <b>Wizard Beard</b>! The most convenient place on this plane to manage your spells!
         </div>
       </div>
-      <SpellFilter onChange={setFilteredSpells} spells={spells} />
-      <div className="Spell-list">
-        {filteredSpells.length ? (
-          filteredSpells.map(s => <Card key={s.name} spell={s} />)
-        ) : (
-          <div className="Description-text">Alas, such a spell has yet to be crafted.</div>
-        )}
-      </div>
+      {isLoading ? (
+        <div>Loading content</div>
+      ) : (
+        <div>
+          <SpellFilter onChange={setFilteredSpells} spells={spells} />
+          <div className="Spell-list">
+            {filteredSpells.length ? (
+              filteredSpells.map(s => <Card key={s.name} spell={s} />)
+            ) : (
+              <div className="Description-text">Alas, such a spell has yet to be crafted.</div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
