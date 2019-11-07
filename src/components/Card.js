@@ -1,4 +1,5 @@
 import React from 'react'
+import marked from 'marked'
 import './Card.css'
 
 const Card = ({ spell }) => {
@@ -15,7 +16,8 @@ const Card = ({ spell }) => {
         <div className="Card-range">{spell.range}</div>
         {spell.concentration === 'yes' && <div className="Card-concentration"></div>}
       </div>
-      <div className="Card-description">{spell.desc}</div>
+      {/* TODO: Only show snippets for long descriptions, with option to click to show all */}
+      <div dangerouslySetInnerHTML={{ __html: marked(spell.desc) }} className="Card-description" />
     </div>
   )
 }
