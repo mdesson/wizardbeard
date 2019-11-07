@@ -9,13 +9,11 @@ const Card = ({ spell }) => {
         <span>{spell.name}</span>
       </div>
       <div className="Card-stats">
-        <div className="Card-level">{prettyLevel(spell.level)}</div>
+        <div className="Card-level">{printLevel(spell.level)}</div>
         <div className="Card-cast-time">{spell.casting_time}</div>
         <div className="Card-duration">{spell.duration}</div>
         <div className="Card-range">{spell.range}</div>
-        {spell.concentration === 'yes' && (
-          <div className="Card-concentration"></div>
-        )}
+        {spell.concentration === 'yes' && <div className="Card-concentration"></div>}
       </div>
       <div className="Card-description">{spell.description}</div>
     </div>
@@ -33,7 +31,7 @@ const schoolEmojis = {
   Transmutation: '🎭' // performing arts
 }
 
-const prettyLevel = level => {
+const printLevel = level => {
   if (level === -1) return 'Cantrip'
   if (level === 1) return '1st level'
   if (level === 2) return '2nd level'
