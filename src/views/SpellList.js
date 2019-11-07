@@ -4,6 +4,7 @@ import Card from '../components/Card.js'
 import SpellFilter from '../components/SpellFilter.js'
 import './SpellList.css'
 
+// TODO: Add filtering and card support for class
 const SpellList = () => {
   const [spells, setSpells] = useState([])
   const [filteredSpells, setFilteredSpells] = useState(spells)

@@ -3,6 +3,7 @@
   flex: 1;
   flex-direction: column;
   background-color: white;
+  justify-content: space-between;
   color: #282c34;
   border-radius: 25px;
   padding: 20px;
@@ -37,6 +38,13 @@
   margin-top: 8px;
   font-weight: bold;
   flex-wrap: wrap;
+}
+
+.Show-hide {
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 5px;
 }
 
 .Card-level {
