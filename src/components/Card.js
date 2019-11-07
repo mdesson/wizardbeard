@@ -21,7 +21,8 @@ const Card = ({ spell }) => {
           <div className="Card-cast-time">{spell.casting_time}</div>
           <div className="Card-duration">{spell.duration}</div>
           <div className="Card-range">{spell.range}</div>
-          {spell.concentration === 'yes' && <div className="Card-concentration"></div>}
+          {spell.concentration === 'yes' && <div className="Card-concentration">Concentration</div>}
+          {spell.ritual === 'yes' && <div className="Card-concentration">Ritual</div>}
         </div>
         <div
           className="Card-description"
