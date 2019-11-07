@@ -16,7 +16,7 @@ const SpellList = () => {
       const result = await axios('https://api.open5e.com/spells/?format=json&limit=2000')
       // add array of dnd classes
       const allSpells = result.data.results.map(spell => {
-        return { ...spell, class: spell.dnd_class.split(', ') }
+        return { ...spell, classes: spell.dnd_class.split(', ') }
       })
 
       setSpells(allSpells)

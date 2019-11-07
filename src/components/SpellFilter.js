@@ -26,7 +26,12 @@ const filterData = (filter, data) => {
   // For example: (A or B or C) and (1 or 2 3)
   const output = data.filter(spell => {
     for (var field in filter) {
-      if (!filter[field].includes(spell[field])) {
+      var fieldValue = filter[field]
+      var spellValue = spell[field]
+      if (Array.isArray(fieldValue) && !fieldValue.some(c => spellValue.indexOf(c) >= 0)) {
+        return false
+      }
+      if (!Array.isArray(fieldValue) && !filter[field].includes(spell[field])) {
         return false
       }
     }
@@ -52,6 +57,21 @@ const SpellFilter = ({ spells, onChange }) => {
         { value: 'Transmutation', label: '🎭 Transmutation', field: 'school' }
       ]
     },
+    {
+      label: 'Class',
+      options: [
+        { value: 'Druid', label: 'Druid', field: 'classes' },
+        { value: 'Wizard', label: 'Wizard', field: 'classes' },
+        { value: 'Sorcerer', label: 'Sorcerer', field: 'classes' },
+        { value: 'Cleric', label: 'Cleric', field: 'classes' },
+        { value: 'Paladin', label: 'Paladin', field: 'classes' },
+        { value: 'Ranger', label: 'Ranger', field: 'classes' },
+        { value: 'Ritual Caster', label: 'Ritual Caster', field: 'classes' },
+        { value: 'Bard', label: 'Bard', field: 'classes' },
+        { value: 'Warlock', label: 'Warlock', field: 'classes' }
+      ]
+    },
+
     {
       label: 'Level',
       options: [
