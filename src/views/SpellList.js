@@ -17,9 +17,11 @@ const SpellList = () => {
       </div>
       <SpellFilter onChange={setFilteredSpells} spells={spells} />
       <div className="Spell-list">
-        {filteredSpells.map(s => (
-          <Card key={s.name} spell={s} />
-        ))}
+        {filteredSpells.length ? (
+          filteredSpells.map(s => <Card key={s.name} spell={s} />)
+        ) : (
+          <div className="Description-text">Alas, such a spell has yet to be crafted.</div>
+        )}
       </div>
     </div>
   )
