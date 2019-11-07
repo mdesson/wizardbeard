@@ -4,6 +4,8 @@ import Card from '../components/Card.js'
 import './SpellList.css'
 import spells from '../mockdata.js'
 
+// react select //
+// options, field is included for parsing
 const options = [
   {
     label: 'School',
@@ -55,6 +57,7 @@ const options = [
   }
 ]
 
+// search bar style
 const styles = {
   option: base => ({
     ...base,
@@ -62,39 +65,75 @@ const styles = {
   })
 }
 
+// component to display searcbar labels
 const formatGroupLabel = data => (
   <div>
     <span>{data.label}</span>
   </div>
 )
 
+// create filter for spells, to be passed to filter function
+const makeFilter = results => {
+  var filter = {}
+
+  if (!results) return filter
+
+  results.map(result => {
+    if (result.field) {
+      if (filter[result.field]) filter[result.field].push(result.value)
+      else filter[result.field] = [result.value]
+    }
+  })
+  return filter
+}
+
+// filter spells according from react select choices
+const filterData = (filter, data) => {
+  // show all data if empty filter
+  if (filter.length === 0 || !filter) return data
+
+  // For each field, inlcude ANY of field, but must match ALL fields
+  // For example: (A or B or C) and (1 or 2 3)
+  const output = data.filter(spell => {
+    for (var field in filter) {
+      if (!filter[field].includes(spell[field])) {
+        return false
+      }
+    }
+    return true
+  })
+
+  return output
+}
+
 const SpellList = () => {
-  const [selected, setSelected] = useState()
+  // const [selected, setSelected] = useState([{}])
+  const [filteredSpells, setFilteredSpells] = useState(spells)
 
   useEffect(() => {
-    console.log(selected)
+    // setFilteredSpells(filterData(makeFilter(selected), spells))
+    // console.log(filterData(makeFilter(selected), spells))
   })
 
   return (
     <div>
       <div className="Description-text">
         <div>
-          Welcome to <b>Wizard Beard</b>! The most convenient place on this
-          plane to manage your spells!
+          Welcome to <b>Wizard Beard</b>! The most convenient place on this plane to manage your spells!
         </div>
       </div>
       <div style={{ marginLeft: 50, marginRight: 50, align: 'center' }}>
         <Select
           isMulti
           closeMenuOnSelect={false}
-          onChange={val => setSelected(val)}
+          onChange={selected => setFilteredSpells(filterData(makeFilter(selected), spells))}
           styles={styles}
           formatGroupLabel={formatGroupLabel}
           options={options}
         />
       </div>
       <div className="Spell-list">
-        {spells.map(s => (
+        {filteredSpells.map(s => (
           <Card key={s.name} spell={s} />
         ))}
       </div>

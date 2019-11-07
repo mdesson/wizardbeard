@@ -26,6 +26,7 @@
 
 .Card-title {
   font-size: calc(10px + 2vmin);
+  font-family: 'Goudy Bookletter 1911', 'serif';
 }
 
 .Card-stats {

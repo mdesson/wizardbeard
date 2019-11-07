@@ -15,6 +15,7 @@
   justify-content: center;
   font-size: calc(24px + 2vmin);
   margin-top: 3px;
+  font-family: 'Goudy Bookletter 1911', 'serif';
 }
 
 .Wizard-header {
@@ -29,15 +30,7 @@
   margin-top: 8px;
   margin-bottom: 10px;
   background: white;
-  background: -webkit-gradient(
-    radial,
-    50% 50%,
-    0,
-    50% 50%,
-    250,
-    from(#fff),
-    to(#282c34)
-  );
+  background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 250, from(#fff), to(#282c34));
 }
 .App-link {
   color: #09d3ac;

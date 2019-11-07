@@ -21,14 +21,14 @@ const Card = ({ spell }) => {
 }
 
 const schoolEmojis = {
-  Abjuration: '🛡️', // shield
-  Conjuration: '🦄', // unicorn
-  Divination: '🔮', // crystal ball
-  Enchantment: '✨', // sparkles
-  Evocation: '💥', // explosion
-  Illusion: '🌫️', // fog
-  Necromancy: '💀', // skull
-  Transmutation: '🎭' // performing arts
+  Abjuration: '🛡️ ', // shield
+  Conjuration: '🦄 ', // unicorn
+  Divination: '🔮 ', // crystal ball
+  Enchantment: '✨ ', // sparkles
+  Evocation: '💥 ', // explosion
+  Illusion: '🌫️ ', // fog
+  Necromancy: '💀 ', // skull
+  Transmutation: '🎭 ' // performing arts
 }
 
 const printLevel = level => {
