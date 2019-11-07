@@ -40,6 +40,13 @@
   flex-wrap: wrap;
 }
 
+.Card-class {
+  text-align: left;
+  font-style: italic;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
 .Show-hide {
   cursor: pointer;
   font-weight: bold;
@@ -71,9 +78,6 @@
   /* none for now */
 }
 
-.Card-class {
-  text-align: left;
-  font-style: italic;
-  margin-bottom: 10px;
-  margin-top: 10px;
+.Card-higher-level {
+  /* none for now */
 }

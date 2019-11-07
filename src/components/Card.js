@@ -29,6 +29,7 @@ const Card = ({ spell }) => {
             __html: showFullDesc ? fullDesc : shortDesc
           }}
         />
+        {showFullDesc && spell.higher_level !== '' && <div className="Card-higher-level">{spell.higher_level}</div>}
         <div className="Card-class">{spell.dnd_class}</div>
       </div>
       <div className="Show-hide" onClick={showHideDesc}>
