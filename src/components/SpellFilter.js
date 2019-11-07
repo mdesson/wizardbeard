@@ -28,10 +28,11 @@ const filterData = (filter, data) => {
     for (var field in filter) {
       var fieldValue = filter[field]
       var spellValue = spell[field]
-      if (Array.isArray(fieldValue) && !fieldValue.some(c => spellValue.indexOf(c) >= 0)) {
+
+      if (Array.isArray(fieldValue) && Array.isArray(spellValue) && !fieldValue.some(c => spellValue.indexOf(c) >= 0)) {
         return false
       }
-      if (!Array.isArray(fieldValue) && !filter[field].includes(spell[field])) {
+      if (!Array.isArray(spellValue) && !fieldValue.includes(spellValue)) {
         return false
       }
     }
