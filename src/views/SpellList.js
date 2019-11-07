@@ -32,7 +32,7 @@ const SpellList = () => {
         </div>
       </div>
       {isLoading ? (
-        <div className="Description-text">Loading content</div>
+        <div className="Loading-text">Loading content</div>
       ) : (
         <div>
           <SpellFilter onChange={setFilteredSpells} spells={spells} />
