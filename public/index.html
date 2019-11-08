@@ -2,10 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link
-      rel="icon"
-      href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/microsoft/209/mage_1f9d9.png"
-    />
+    <link rel="icon" href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/microsoft/209/mage_1f9d9.png" />
     <link href="https://fonts.googleapis.com/css?family=Goudy+Bookletter+1911&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Tangerine" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -40,5 +37,22 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+    <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-analytics.js"></script>
+    <script>
+      var firebaseConfig = {
+        apiKey: 'AIzaSyC5GpQmo3KOM_ZHhXygAZAJJASg0RNWtxE',
+        authDomain: 'wizardbeard-73dbf.firebaseapp.com',
+        databaseURL: 'https://wizardbeard-73dbf.firebaseio.com',
+        projectId: 'wizardbeard-73dbf',
+        storageBucket: 'wizardbeard-73dbf.appspot.com',
+        messagingSenderId: '62817658947',
+        appId: '1:62817658947:web:dc8e87a653519d3cc90cf6',
+        measurementId: 'G-7BSV9EX3RP'
+      }
+      firebase.initializeApp(firebaseConfig)
+      firebase.analytics()
+    </script>
   </body>
 </html>
