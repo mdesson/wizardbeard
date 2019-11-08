@@ -38,11 +38,15 @@
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  flex-wrap: wrap;
   margin-bottom: 5px;
+  margin-left: 40%;
+  margin-right: 40%;
 }
 
 .App-menu-item {
   text-decoration: none;
   font-family: 'Goudy Bookletter 1911', 'serif';
   color: white;
+  text-align: center;
 }
