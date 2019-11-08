@@ -29,6 +29,7 @@ const filterData = (filter, data) => {
       var fieldValue = filter[field]
       var spellValue = spell[field]
 
+      // eslint-disable-next-line
       if (Array.isArray(fieldValue) && Array.isArray(spellValue) && !fieldValue.some(c => spellValue.indexOf(c) >= 0)) {
         return false
       }
@@ -90,17 +91,11 @@ const SpellFilter = ({ spells, onChange }) => {
     },
     {
       label: 'Ritual Spell',
-      options: [
-        { value: 'yes', label: 'Is Ritual', field: 'ritual' },
-        { value: 'no', label: 'Not Ritual', field: 'ritual' }
-      ]
+      options: [{ value: 'yes', label: 'Is Ritual', field: 'ritual' }, { value: 'no', label: 'Not Ritual', field: 'ritual' }]
     },
     {
       label: 'Concentration Spell',
-      options: [
-        { value: 'yes', label: 'Is Concentration', field: 'concentration' },
-        { value: 'no', label: 'Not Concentration', field: 'concentration' }
-      ]
+      options: [{ value: 'yes', label: 'Is Concentration', field: 'concentration' }, { value: 'no', label: 'Not Concentration', field: 'concentration' }]
     },
     {
       label: 'Name',
