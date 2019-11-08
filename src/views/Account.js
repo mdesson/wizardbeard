@@ -1,6 +1,8 @@
 import React from 'react'
 
 // TODO: For data access, https://firebase.google.com/docs/firestore/security/overview
+// Better link: https://firebase.google.com/docs/firestore/security/rules-conditions
+// Set up firestore: https://firebase.google.com/docs/firestore/quickstart
 
 const Account = ({ signInFunc, signOutFunc }) => {
   return (

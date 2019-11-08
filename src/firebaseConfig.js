@@ -1,3 +1,4 @@
+// note: Not secret, firebase api keys are public by default, and must run clientside
 var firebaseConfig = {
   apiKey: 'AIzaSyC5GpQmo3KOM_ZHhXygAZAJJASg0RNWtxE',
   authDomain: 'wizardbeard-73dbf.firebaseapp.com',

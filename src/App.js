@@ -8,8 +8,13 @@ import Account from './views/Account'
 import './App.css'
 import firebaseConfig from './firebaseConfig.js'
 
+// TODO: Pages are Spell List, My Spellbook, Adventurers
+
 //// FIREBASE STUFF ////
 firebase.initializeApp(firebaseConfig)
+
+// firestore
+var db = firebase.firestore()
 
 // Google OAuth
 var provider = new firebase.auth.GoogleAuthProvider()
@@ -27,7 +32,6 @@ var signIn = () => {
       var token = result.credential.accessToken
       // The signed-in user info.
       var user = result.user
-      // ...
     })
     .catch(function(error) {
       // Handle Errors here.
@@ -38,8 +42,8 @@ var signIn = () => {
       // The firebase.auth.AuthCredential type that was used.
       var credential = error.credential
     })
+  console.log('signed in!')
 }
-
 var signOut = () => {
   firebase
     .auth()
@@ -50,37 +54,39 @@ var signOut = () => {
     .catch(function(error) {
       // An error happened.
     })
+  console.log('signed out!')
+  console.log(firebase.auth())
 }
 
 function App() {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <span className='Wizard-header' role='img' aria-label='wizard'>
+    <div className="App">
+      <header className="App-header">
+        <span className="Wizard-header" role="img" aria-label="wizard">
           🧙
         </span>
-        <span className='Title-header'>Wizard Beard</span>
+        <span className="Title-header">Wizard Beard</span>
       </header>
 
       <Router>
         {/* Router Links */}
-        <div className='App-menu'>
-          <Link className='App-menu-item' to='/'>
+        <div className="App-menu">
+          <Link className="App-menu-item" to="/">
             Spell List
           </Link>
-          <Link className='App-menu-item' to='/account'>
+          <Link className="App-menu-item" to="/account">
             Account
           </Link>
         </div>
 
-        <div className='Underline'></div>
+        <div className="Underline"></div>
 
         {/* Content and Router Swtich */}
         <Switch>
-          <Route path='/account'>
+          <Route path="/account">
             <Account signInFunc={signIn} signOutFunc={signOut} />
           </Route>
-          <Route path='/'>
+          <Route path="/">
             <SpellList />
           </Route>
         </Switch>
