@@ -13,9 +13,6 @@ firebase.initializeApp(firebaseConfig)
 
 // Google OAuth
 var provider = new firebase.auth.GoogleAuthProvider()
-// provider.addScope('https://www.googleapis.com/auth/contacts.readonly')
-provider.addScope('profile')
-provider.addScope('email')
 
 // set language for OAuth
 firebase.auth().languageCode = 'en'
