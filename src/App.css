@@ -32,6 +32,16 @@
   background: white;
   background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 250, from(#fff), to(#282c34));
 }
-.App-link {
-  color: #09d3ac;
+
+.App-menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.App-menu-item {
+  margin: 5px;
+  text-decoration: none;
+  font-family: 'Goudy Bookletter 1911', 'serif';
+  color: white;
 }
