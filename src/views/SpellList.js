@@ -33,6 +33,7 @@ const SpellList = () => {
     if (spells.length === 0) {
       fetchData()
     }
+    // eslint-disable-next-line
   }, [])
 
   return (
