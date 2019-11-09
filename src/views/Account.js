@@ -1,31 +1,59 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { LOGIN, LOGOUT } from '../redux/actionTypes'
+import { LOGIN, LOGOUT, FETCH_CHARACTERS } from '../redux/actionTypes'
+import { auth, provider, db } from '../firebaseConfig'
 import './Account.css'
 
-// TODO: For data access, https://firebase.google.com/docs/firestore/security/overview
-// Better link: https://firebase.google.com/docs/firestore/security/rules-conditions
-// Set up firestore: https://firebase.google.com/docs/firestore/quickstart
-// example:
-// db.collection('users')
-//   .doc(firebase.auth().currentUser.uid)
-//   .set({ name: 'mike' })
-
-const Account = ({ auth, provider }) => {
+const Account = () => {
   const [loggingIn, setLoggingIn] = useState(false)
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
 
   const signIn = async () => {
+    // display loading message
     setLoggingIn(true)
 
+    // open OAuth window for signin
     await auth.signInWithPopup(provider).catch(function(error) {
       console.error('ERROR ON SIGNIN:' + error)
     })
 
+    // Get logged in user's data and put in store
     const loggedinUser = auth.currentUser
     dispatch({ type: LOGIN, payload: { name: loggedinUser.displayName, uid: loggedinUser.uid } })
 
+    // fetch user's record from firestore
+    const userDoc = db.collection('users').doc(loggedinUser.uid)
+
+    // fetch user's characters
+    userDoc
+      .get()
+      .then(doc => {
+        // if user exists in firestore
+        if (doc.exists) {
+          // if user already has an account, load characters into store
+          if (doc.get('characters')) {
+            dispatch({ type: FETCH_CHARACTERS, payload: doc.get('characters') })
+          }
+
+          // new user, create empty array of characters, load empty array into store
+          else {
+            db.collection('users')
+              .doc(loggedinUser.uid)
+              .set({ characters: [] })
+
+            dispatch({ type: FETCH_CHARACTERS, payload: [] })
+          }
+        }
+
+        // error, user does not exist
+        else {
+          console.error('ERROR: No such user, sign in workflow error.')
+        }
+      })
+      .catch(error => console.log(error))
+
+    // hide loading message
     setLoggingIn(false)
   }
 
@@ -63,7 +91,7 @@ const Account = ({ auth, provider }) => {
       <div>
         <ul>
           <li>Create characters</li>
-          <li>Change their class(es)</li>
+          <li>Change their class</li>
           <li>Set their level</li>
           <li>Delete characters</li>
         </ul>

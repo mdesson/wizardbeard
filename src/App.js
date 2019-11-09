@@ -1,6 +1,5 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import { auth, provider } from './firebaseConfig'
 import SpellList from './views/SpellList.js'
 import Account from './views/Account'
 import './App.css'
@@ -32,7 +31,7 @@ function App() {
         {/* Content and Router Swtich */}
         <Switch>
           <Route path='/account'>
-            <Account auth={auth} provider={provider} />
+            <Account />
           </Route>
           <Route path='/'>
             <SpellList />
