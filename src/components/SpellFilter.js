@@ -1,5 +1,7 @@
 import React from 'react'
 import Select from 'react-select'
+import { useSelector, useDispatch } from 'react-redux'
+import { SET_SPELL_FILTER } from '../redux/actionTypes'
 
 // create filter for spells, to be passed to filter function
 const makeFilter = results => {
@@ -44,6 +46,9 @@ const filterData = (filter, data) => {
 }
 
 const SpellFilter = ({ spells, onChange }) => {
+  const spellFilter = useSelector(state => state.spellfilter)
+  const dispatch = useDispatch()
+
   // options, field is included for parsing
   const options = [
     {
@@ -125,10 +130,14 @@ const SpellFilter = ({ spells, onChange }) => {
       <Select
         isMulti
         closeMenuOnSelect={false}
-        onChange={selected => onChange(filterData(makeFilter(selected), spells))}
+        onChange={selected => {
+          dispatch({ type: SET_SPELL_FILTER, payload: selected })
+          onChange(filterData(makeFilter(selected), spells))
+        }}
         styles={styles}
         formatGroupLabel={formatGroupLabel}
         options={options}
+        defaultValue={spellFilter}
       />
     </div>
   )

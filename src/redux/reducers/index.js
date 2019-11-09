@@ -1,4 +1,4 @@
 import { combineReducers } from 'redux'
 import allspells from './allspells'
-
-export default combineReducers({ allspells })
+import spellfilter from './spellfilter'
+export default combineReducers({ allspells, spellfilter })
