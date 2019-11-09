@@ -5,4 +5,4 @@ import filteredspells from './filteredspells'
 import user from './user'
 import characters from './characters'
 
-export default combineReducers({ allspells, spellfilter, filteredspells, user })
+export default combineReducers({ allspells, spellfilter, filteredspells, user, characters })
