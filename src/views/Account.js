@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { LOGIN, LOGOUT, FETCH_CHARACTERS } from '../redux/actionTypes'
+import { LOGIN, LOGOUT, FETCH_CHARACTERS, CLEAR_CHARACTERS } from '../redux/actionTypes'
 import { auth, provider, db } from '../firebaseConfig'
 import './Account.css'
 
@@ -61,7 +61,9 @@ const Account = () => {
     await auth.signOut().catch(function(error) {
       console.error('ERROR ON SIGNOUT:' + error)
     })
+    // clear user data from redux
     dispatch({ type: LOGOUT })
+    dispatch({ type: CLEAR_CHARACTERS })
   }
 
   return (
