@@ -1,29 +1,11 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import * as firebase from 'firebase/app'
-import 'firebase/auth'
-import 'firebase/firestore'
+import { auth, provider } from './firebaseConfig'
 import SpellList from './views/SpellList.js'
 import Account from './views/Account'
 import './App.css'
-import firebaseConfig from './firebaseConfig.js'
 
-// TODO: Pages are Spell List, My Spellbook, Adventurers
-
-// const dispatch = useDispatch()
-
-//// FIREBASE STUFF ////
-firebase.initializeApp(firebaseConfig)
-
-// firestore
-var db = firebase.firestore()
-
-// Google OAuth
-var provider = new firebase.auth.GoogleAuthProvider()
-
-// set language for OAuth
-firebase.auth().languageCode = 'en'
-firebase.auth().useDeviceLanguage()
+// TODO: Pages are Spell List, My Spellbook, Account
 
 function App() {
   return (
@@ -50,7 +32,7 @@ function App() {
         {/* Content and Router Swtich */}
         <Switch>
           <Route path='/account'>
-            <Account auth={firebase.auth()} provider={provider} />
+            <Account auth={auth} provider={provider} />
           </Route>
           <Route path='/'>
             <SpellList />

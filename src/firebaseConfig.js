@@ -1,5 +1,9 @@
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
+
 // note: Not secret, firebase api keys are public by default, and must run clientside
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: 'AIzaSyC5GpQmo3KOM_ZHhXygAZAJJASg0RNWtxE',
   authDomain: 'wizardbeard-73dbf.firebaseapp.com',
   databaseURL: 'https://wizardbeard-73dbf.firebaseio.com',
@@ -10,4 +14,19 @@ var firebaseConfig = {
   measurementId: 'G-7BSV9EX3RP'
 }
 
-export default firebaseConfig
+firebase.initializeApp(firebaseConfig)
+
+// set language for OAuth
+firebase.auth().languageCode = 'en'
+firebase.auth().useDeviceLanguage()
+
+// firestore
+export const db = firebase.firestore()
+
+// Google OAuth
+export const provider = new firebase.auth.GoogleAuthProvider()
+
+// Auth
+export const auth = firebase.auth()
+
+export default firebase
