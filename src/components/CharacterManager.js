@@ -8,9 +8,21 @@ const CharacterRows = ({ characterArray }) => {
       <td>{character.name}</td>
       <td>{character.class}</td>
       <td>{character.level}</td>
-      <td className='Account-button'>Delete</td>
+      <td className='Account-button'>Modify</td>
     </tr>
   ))
+}
+
+const AddCharacter = () => {
+  return <div></div>
+}
+
+const DeleteCharacter = () => {
+  return <div></div>
+}
+
+const EditCharacter = () => {
+  return <div></div>
 }
 
 const CharacterManager = () => {

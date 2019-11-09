@@ -4,9 +4,3 @@
   flex-direction: row;
   margin-bottom: 1%;
 }
-
-.Account-button {
-  cursor: pointer;
-  font-weight: bold;
-  color: lightcoral;
-}
