@@ -38,6 +38,7 @@
   padding: 20px;
   border: 1px solid #888;
   width: 90%;
+  border-radius: 25px;
 }
 
 @media screen and (min-width: 1000px) {
@@ -48,10 +49,10 @@
     padding: 20px;
     border: 1px solid #888;
     width: 40%;
+    border-radius: 20px;
   }
 }
 
-/* The Close Button */
 .CharacterManager-modal-close {
   color: #aaaaaa;
   float: right;

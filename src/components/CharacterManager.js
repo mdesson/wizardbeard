@@ -18,14 +18,15 @@ const CharacterRow = ({ character }) => {
   )
 }
 
-const Modal = ({ hideModal }) => {
+const Modal = ({ hideModal, characterFunction }) => {
   return (
     <div className='CharacterManager-modal'>
       <div className='CharacterManager-modal-content'>
         <span className='CharacterManager-modal-close' onClick={hideModal}>
           &times;
         </span>
-        <p>Some text in the Modal..</p>
+        <p>For with three fields</p>
+        <div>Save button</div>
       </div>
     </div>
   )
