@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import Card from '../components/Card.js'
 import SpellFilter from '../components/SpellFilter.js'
 import './SpellList.css'
+import { LOAD_ALL_SPELLS } from '../redux/actionTypes'
 
+// TODO: Add filtering and card support for class
 const SpellList = () => {
-  const [spells, setSpells] = useState([])
+  const spells = useSelector(state => state.allspells)
+  const dispatch = useDispatch()
+
   const [filteredSpells, setFilteredSpells] = useState(spells)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -18,11 +23,13 @@ const SpellList = () => {
         return { ...spell, classes: spell.dnd_class.split(', ') }
       })
 
-      setSpells(allSpells)
       setFilteredSpells(allSpells)
       setIsLoading(false)
+      dispatch({ type: LOAD_ALL_SPELLS, payload: allSpells })
     }
-    fetchData()
+    if (spells.length === 0) {
+      fetchData()
+    }
   }, [])
 
   return (
