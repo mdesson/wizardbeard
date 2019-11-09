@@ -68,6 +68,7 @@ const Account = () => {
 
   return (
     <div className='Account-container'>
+      {/* Account greeting with log in/out buttons */}
       <div className='Account-greeting'>
         {loggingIn && <div>Logging In...</div>}
         {user && !loggingIn && (
@@ -88,15 +89,36 @@ const Account = () => {
             to access this page's features.
           </div>
         )}
+
+        {/* Character Management */}
       </div>
-      <div>Use this page to manage your characters. You can:</div>
-      <div>
-        <ul>
-          <li>Create characters</li>
-          <li>Change their class</li>
-          <li>Set their level</li>
-          <li>Delete characters</li>
-        </ul>
+      <div className='Account-table-container'>
+        <table className='Account-table'>
+          <tr>
+            <th>Name</th>
+            <th>Class</th>
+            <th>Level</th>
+            <th> </th>
+          </tr>
+          <tr>
+            <td>Conan</td>
+            <td>Barbarian</td>
+            <td>15</td>
+            <td>Edit</td>
+          </tr>
+          <tr>
+            <td>Gandalf</td>
+            <td>Wizard</td>
+            <td>20</td>
+            <td>Edit</td>
+          </tr>
+          <tr>
+            <td>Sir Lancelot</td>
+            <td>Paladin</td>
+            <td>12</td>
+            <td>Edit</td>
+          </tr>
+        </table>
       </div>
       <div></div>
     </div>
