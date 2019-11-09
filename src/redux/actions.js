@@ -1,4 +1,4 @@
-import { LOAD_ALL_SPELLS, SET_SPELL_FILTER, LOGIN, LOGOUT } from './actionTypes'
+import { LOAD_ALL_SPELLS, SET_SPELL_FILTER, SET_FILTERED_SPELLS, LOGIN, LOGOUT } from './actionTypes'
 
 export const loadAllSpells = content => ({
   type: LOAD_ALL_SPELLS,
@@ -7,6 +7,11 @@ export const loadAllSpells = content => ({
 
 export const setSpellFilter = content => ({
   type: SET_SPELL_FILTER,
+  payload: content
+})
+
+export const setFilteredSpells = content => ({
+  type: SET_FILTERED_SPELLS,
   payload: content
 })
 
