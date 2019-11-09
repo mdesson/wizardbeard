@@ -17,3 +17,51 @@
   font-style: italic;
   margin: 3px;
 }
+
+.CharacterManager-modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  padding-top: 5%;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.CharacterManager-modal-content {
+  background-color: #fefefe;
+  color: #282c34;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 90%;
+}
+
+@media screen and (min-width: 1000px) {
+  .CharacterManager-modal-content {
+    background-color: #fefefe;
+    color: #282c34;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+  }
+}
+
+/* The Close Button */
+.CharacterManager-modal-close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
