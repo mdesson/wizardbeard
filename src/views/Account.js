@@ -42,10 +42,11 @@ const Account = ({ auth, provider }) => {
         {loggingIn && <div>Logging In...</div>}
         {user && !loggingIn && (
           <div>
-            Welcome, {user.name}{' '}
+            Welcome, {user.name} (
             <span className='Account-sign-in-out' onClick={signOut}>
-              (Sign Out)
+              Sign Out
             </span>
+            )
           </div>
         )}
         {!user && !loggingIn && (
