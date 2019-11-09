@@ -1,98 +1,17 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { LOGIN, LOGOUT, FETCH_CHARACTERS, CLEAR_CHARACTERS } from '../redux/actionTypes'
-import { auth, provider, db } from '../firebaseConfig'
+import { useSelector } from 'react-redux'
+import AccoutGreeting from '../components/AccountGreeting'
 import './Account.css'
 
 const Account = () => {
   const [loggingIn, setLoggingIn] = useState(false)
-  const dispatch = useDispatch()
   const user = useSelector(state => state.user)
-
-  const signIn = async () => {
-    // display loading message
-    setLoggingIn(true)
-
-    // open OAuth window for signin
-    await auth.signInWithPopup(provider).catch(function(error) {
-      console.error('ERROR ON SIGNIN:' + error)
-    })
-
-    // Get logged in user's data and put in store
-    const loggedinUser = auth.currentUser
-    dispatch({ type: LOGIN, payload: { name: loggedinUser.displayName, uid: loggedinUser.uid } })
-
-    // fetch user's record from firestore
-    const userDoc = db.collection('users').doc(loggedinUser.uid)
-
-    // fetch user's characters
-    userDoc
-      .get()
-      .then(doc => {
-        // if user exists in firestore
-        if (doc.exists) {
-          // if user already has an account, load characters into store
-          if (doc.get('characters')) {
-            dispatch({ type: FETCH_CHARACTERS, payload: doc.get('characters') })
-          }
-
-          // new user, create empty array of characters, load empty array into store
-          else {
-            db.collection('users')
-              .doc(loggedinUser.uid)
-              .set({ characters: [] })
-
-            dispatch({ type: FETCH_CHARACTERS, payload: [] })
-          }
-        }
-
-        // error, user does not exist
-        else {
-          console.error('ERROR: No such user, sign in workflow error.')
-        }
-      })
-      .catch(error => console.log(error))
-
-    // hide loading message
-    setLoggingIn(false)
-  }
-
-  const signOut = async () => {
-    await auth.signOut().catch(function(error) {
-      console.error('ERROR ON SIGNOUT:' + error)
-    })
-    // clear user data from redux
-    dispatch({ type: LOGOUT })
-    dispatch({ type: CLEAR_CHARACTERS })
-  }
+  const characters = useSelector(state => state.characters)
 
   return (
     <div className='Account-container'>
-      {/* Account greeting with log in/out buttons */}
-      <div className='Account-greeting'>
-        {loggingIn && <div>Logging In...</div>}
-        {user && !loggingIn && (
-          <div>
-            Welcome, {user.name} (
-            <span className='Account-button' onClick={signOut}>
-              Sign Out
-            </span>
-            )
-          </div>
-        )}
-        {!user && !loggingIn && (
-          <div>
-            Welcome, stranger.{' '}
-            <span className='Account-button' onClick={signIn}>
-              Sign In or Create Account
-            </span>{' '}
-            to access this page's features.
-          </div>
-        )}
-
-        {/* Character Management */}
-      </div>
-      {user && (
+      <AccoutGreeting loggingIn={loggingIn} setLoggingIn={setLoggingIn} />
+      {user && !loggingIn && (
         <div className='Account-table-container'>
           <table className='Account-table'>
             <tr>
@@ -101,24 +20,14 @@ const Account = () => {
               <th>Level</th>
               <th> </th>
             </tr>
-            <tr>
-              <td>Conan</td>
-              <td>Barbarian</td>
-              <td>15</td>
-              <td className='Account-button'>Edit</td>
-            </tr>
-            <tr>
-              <td>Gandalf</td>
-              <td>Wizard</td>
-              <td>20</td>
-              <td className='Account-button'>Edit</td>
-            </tr>
-            <tr>
-              <td>Sir Lancelot</td>
-              <td>Paladin</td>
-              <td>12</td>
-              <td className='Account-button'>Edit</td>
-            </tr>
+            {characters.map(character => (
+              <tr>
+                <td>{character.name}</td>
+                <td>{character.class}</td>
+                <td>{character.level}</td>
+                <td className='Account-button'>Delete</td>
+              </tr>
+            ))}
           </table>
           <div className='Account-button'>Add New</div>
         </div>

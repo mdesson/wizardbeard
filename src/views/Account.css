@@ -4,13 +4,6 @@
   align-items: center;
 }
 
-.Account-greeting {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  margin-bottom: 1%;
-}
-
 .Account-button {
   cursor: pointer;
   font-weight: bold;
