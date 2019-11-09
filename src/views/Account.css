@@ -1,8 +1,7 @@
 .Account-container {
   display: flex;
   flex-direction: column;
-  justify-content: left;
-  align-items: left;
+  align-items: center;
 }
 
 .Account-greeting {
@@ -12,9 +11,10 @@
   margin-bottom: 1%;
 }
 
-.Account-sign-in-out {
+.Account-button {
   cursor: pointer;
   font-weight: bold;
+  color: lightcoral;
 }
 
 .Account-table-container {
@@ -25,6 +25,7 @@
 
 .Account-table th {
   text-align: left;
+  font-size: calc(8px + 1vmin);
 }
 
 .Account-table td {

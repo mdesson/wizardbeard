@@ -74,7 +74,7 @@ const Account = () => {
         {user && !loggingIn && (
           <div>
             Welcome, {user.name} (
-            <span className='Account-sign-in-out' onClick={signOut}>
+            <span className='Account-button' onClick={signOut}>
               Sign Out
             </span>
             )
@@ -83,7 +83,7 @@ const Account = () => {
         {!user && !loggingIn && (
           <div>
             Welcome, stranger.{' '}
-            <span className='Account-sign-in-out' onClick={signIn}>
+            <span className='Account-button' onClick={signIn}>
               Sign In or Create Account
             </span>{' '}
             to access this page's features.
@@ -92,35 +92,37 @@ const Account = () => {
 
         {/* Character Management */}
       </div>
-      <div className='Account-table-container'>
-        <table className='Account-table'>
-          <tr>
-            <th>Name</th>
-            <th>Class</th>
-            <th>Level</th>
-            <th> </th>
-          </tr>
-          <tr>
-            <td>Conan</td>
-            <td>Barbarian</td>
-            <td>15</td>
-            <td>Edit</td>
-          </tr>
-          <tr>
-            <td>Gandalf</td>
-            <td>Wizard</td>
-            <td>20</td>
-            <td>Edit</td>
-          </tr>
-          <tr>
-            <td>Sir Lancelot</td>
-            <td>Paladin</td>
-            <td>12</td>
-            <td>Edit</td>
-          </tr>
-        </table>
-      </div>
-      <div></div>
+      {user && (
+        <div className='Account-table-container'>
+          <table className='Account-table'>
+            <tr>
+              <th>Name</th>
+              <th>Class</th>
+              <th>Level</th>
+              <th> </th>
+            </tr>
+            <tr>
+              <td>Conan</td>
+              <td>Barbarian</td>
+              <td>15</td>
+              <td className='Account-button'>Edit</td>
+            </tr>
+            <tr>
+              <td>Gandalf</td>
+              <td>Wizard</td>
+              <td>20</td>
+              <td className='Account-button'>Edit</td>
+            </tr>
+            <tr>
+              <td>Sir Lancelot</td>
+              <td>Paladin</td>
+              <td>12</td>
+              <td className='Account-button'>Edit</td>
+            </tr>
+          </table>
+          <div className='Account-button'>Add New</div>
+        </div>
+      )}
     </div>
   )
 }
