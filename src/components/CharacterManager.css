@@ -61,9 +61,21 @@
   cursor: pointer;
 }
 
-.close:hover,
-.close:focus {
+.CharacterManager-modal-,
+.CharacterManager-modal- {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+.CharacterManager-modal-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.CharacterManager-modal-form > label {
+  margin-top: 1%;
+  margin-bottom: 2%;
+  font-weight: bold;
 }
