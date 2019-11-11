@@ -37,6 +37,7 @@ const AddCharacter = ({ hideModal }) => {
   const [charClass, setCharClass] = useState('Druid')
   const [charLevel, setCharLevel] = useState(1)
   const user = useSelector(state => state.user)
+  const characterNames = useSelector(state => state.characters).map(char => char.name)
   const dispatch = useDispatch()
 
   const classes = ['Druid', 'Wizard', 'Sorcerer', 'Cleric', 'Paladin', 'Ranger', 'Ritual Caster', 'Bard', 'Warlock']
@@ -85,7 +86,11 @@ const AddCharacter = ({ hideModal }) => {
         <label>
           Level: <input onChange={levelChange} type='number' defaultValue={1} min={1} max={20}></input>
         </label>
-        <button onClick={createCharacter}>Save</button>
+        <button onClick={createCharacter} disabled={characterNames.includes(charName) || charName.length === 0}>
+          Save
+        </button>
+        {characterNames.includes(charName) && <div>Character name must be unique</div>}
+        {charName.length === 0 && <div>Character must have a name</div>}
       </form>
     </div>
   )
