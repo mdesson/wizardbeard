@@ -108,7 +108,7 @@ const CharacterManager = () => {
       <table className='CharacterManager-table'>
         <tbody>
           <tr>
-            <th onClick={() => console.log(characters)}>Name</th>
+            <th>Name</th>
             <th>Class</th>
             <th>Level</th>
             <th> </th>
