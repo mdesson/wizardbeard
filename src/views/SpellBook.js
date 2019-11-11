@@ -1,7 +1,7 @@
 import React from 'react'
 
 const SpellBook = () => {
-  // TODO: Create Spellbook component
+  // Components: CharacterSelect, PreparedSpells, KnownSpells
   return <div>Spellbook</div>
 }
 
