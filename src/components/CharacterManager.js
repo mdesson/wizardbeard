@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { CREATE_CHARACTER, UPDATE_CHARACTER } from '../redux/actionTypes'
+import { deleteCharacter } from '../redux/actions'
 import firebase, { db } from '../firebaseConfig'
 import './CharacterManager.css'
 
@@ -9,16 +10,21 @@ const CharacterRows = ({ characterArray }) => {
 }
 
 const CharacterRow = ({ character }) => {
+  // State
   const [modifyMode, setModifyMode] = useState(false)
+  const [deleteMode, setDeleteMode] = useState(false)
   const [charName, setCharName] = useState(character.name)
   const [charClass, setCharClass] = useState(character.class)
   const [charLevel, setCharLevel] = useState(character.level)
+
+  // Data
   const user = useSelector(state => state.user)
   const characterNames = useSelector(state => state.characters).map(char => char.name)
   const dispatch = useDispatch()
   const classes = ['Druid', 'Wizard', 'Sorcerer', 'Cleric', 'Paladin', 'Ranger', 'Ritual Caster', 'Bard', 'Warlock']
 
-  const toggleModify = () => setModifyMode(true)
+  const toggleModify = () => setModifyMode(!modifyMode)
+  const toggleDelete = () => setDeleteMode(!deleteMode)
 
   const nameChange = event => {
     event.persist()
@@ -55,6 +61,19 @@ const CharacterRow = ({ character }) => {
     setModifyMode(false)
   }
 
+  const confirmDelete = async () => {
+    // remove from store
+    dispatch(deleteCharacter(character))
+
+    // user's document on firestore
+    const userDoc = db.collection('users').doc(user.uid)
+
+    // remove from firestore
+    await userDoc.update({ characters: firebase.firestore.FieldValue.arrayRemove(character) })
+
+    setDeleteMode(false)
+  }
+
   return (
     <tr key={character.name}>
       <td>{modifyMode ? <input type='text' defaultValue={character.name} onChange={nameChange} /> : character.name}</td>
@@ -74,6 +93,15 @@ const CharacterRow = ({ character }) => {
       <td>{modifyMode ? <input onChange={levelChange} type='number' defaultValue={character.level} min={1} max={20}></input> : character.level}</td>
       <td className='Account-button' onClick={modifyMode ? saveChanges : toggleModify}>
         {modifyMode ? 'Save' : 'Modify'}
+      </td>
+      <td className='Account-button'>
+        {deleteMode ? (
+          <span>
+            <span onClick={confirmDelete}>Confirm</span> / <span onClick={toggleDelete}>Cancel</span>
+          </span>
+        ) : (
+          <span onClick={toggleDelete}>Delete</span>
+        )}
       </td>
     </tr>
   )
