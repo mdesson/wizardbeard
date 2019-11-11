@@ -75,7 +75,7 @@ const CharacterRow = ({ character }) => {
 
   return (
     <tr key={character.name}>
-      <td>{modifyMode ? <input type='text' defaultValue={character.name} onChange={nameChange} /> : character.name}</td>
+      <td>{modifyMode ? <input className='CharacterManager-table-input-text' type='text' defaultValue={character.name} onChange={nameChange} /> : character.name}</td>
       <td>
         {modifyMode ? (
           <select defaultValue={character.class} onChange={classChange}>
@@ -89,7 +89,13 @@ const CharacterRow = ({ character }) => {
           character.class
         )}
       </td>
-      <td>{modifyMode ? <input onChange={levelChange} type='number' defaultValue={character.level} min={1} max={20}></input> : character.level}</td>
+      <td>
+        {modifyMode ? (
+          <input className='CharacterManager-table-input-number' type='number' defaultValue={character.level} min={1} max={20} onChange={levelChange}></input>
+        ) : (
+          character.level
+        )}
+      </td>
       {!deleteMode ? (
         <td className='Account-button' onClick={modifyMode ? saveChanges : toggleModify}>
           {modifyMode ? 'Save' : 'Modify'}

@@ -13,6 +13,13 @@
   padding: 5px;
 }
 
+.CharacterManager-table-input-number {
+  width: 4ch;
+}
+.CharacterManager-table-input-text {
+  width: 10ch;
+}
+
 .CharacterManager-message {
   font-style: italic;
   margin: 3px;
