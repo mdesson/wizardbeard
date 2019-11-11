@@ -1,4 +1,4 @@
-import { LOAD_ALL_SPELLS, SET_SPELL_FILTER, SET_FILTERED_SPELLS, LOGIN, LOGOUT, FETCH_CHARACTERS, CREATE_CHARACTER, CLEAR_CHARACTERS } from './actionTypes'
+import { LOAD_ALL_SPELLS, SET_SPELL_FILTER, SET_FILTERED_SPELLS, LOGIN, LOGOUT, FETCH_CHARACTERS, CREATE_CHARACTER, DELETE_CHARACTER, CLEAR_CHARACTERS } from './actionTypes'
 
 export const loadAllSpells = content => ({
   type: LOAD_ALL_SPELLS,
@@ -31,6 +31,12 @@ export const fetchCharacters = content => ({
 
 export const createCharacter = content => ({
   type: CREATE_CHARACTER,
+  payload: content.newChar,
+  remove: content.oldChar
+})
+
+export const deleteCharacter = content => ({
+  type: DELETE_CHARACTER,
   payload: content
 })
 

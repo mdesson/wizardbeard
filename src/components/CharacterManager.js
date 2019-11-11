@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { CREATE_CHARACTER } from '../redux/actionTypes'
+import { CREATE_CHARACTER, UPDATE_CHARACTER } from '../redux/actionTypes'
 import firebase, { db } from '../firebaseConfig'
 import './CharacterManager.css'
 
@@ -9,12 +9,72 @@ const CharacterRows = ({ characterArray }) => {
 }
 
 const CharacterRow = ({ character }) => {
+  const [modifyMode, setModifyMode] = useState(false)
+  const [charName, setCharName] = useState(character.name)
+  const [charClass, setCharClass] = useState(character.class)
+  const [charLevel, setCharLevel] = useState(character.level)
+  const user = useSelector(state => state.user)
+  const characterNames = useSelector(state => state.characters).map(char => char.name)
+  const dispatch = useDispatch()
+  const classes = ['Druid', 'Wizard', 'Sorcerer', 'Cleric', 'Paladin', 'Ranger', 'Ritual Caster', 'Bard', 'Warlock']
+
+  const toggleModify = () => setModifyMode(true)
+
+  const nameChange = event => {
+    event.persist()
+    setCharName(event.target.value)
+  }
+
+  const classChange = event => {
+    event.persist()
+    setCharClass(event.target.value)
+  }
+
+  const levelChange = event => {
+    event.persist()
+    setCharLevel(event.target.value)
+  }
+
+  const saveChanges = async () => {
+    // new character
+    const updatedChar = { name: charName, class: charClass, level: charLevel }
+
+    // update store
+    dispatch({ type: UPDATE_CHARACTER, payload: updatedChar, remove: character })
+
+    // user's document on firestore
+    const userDoc = db.collection('users').doc(user.uid)
+
+    // remove from firestore
+    await userDoc.update({ characters: firebase.firestore.FieldValue.arrayRemove(character) })
+
+    // add to firestore
+    await userDoc.update({ characters: firebase.firestore.FieldValue.arrayUnion(updatedChar) })
+
+    // end modify mode
+    setModifyMode(false)
+  }
+
   return (
     <tr key={character.name}>
-      <td>{character.name}</td>
-      <td>{character.class}</td>
-      <td>{character.level}</td>
-      <td className='Account-button'>Modify</td>
+      <td>{modifyMode ? <input type='text' defaultValue={character.name} onChange={nameChange} /> : character.name}</td>
+      <td>
+        {modifyMode ? (
+          <select defaultValue={character.class} onChange={classChange}>
+            {classes.map(c => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+        ) : (
+          character.class
+        )}
+      </td>
+      <td>{modifyMode ? <input onChange={levelChange} type='number' defaultValue={character.level} min={1} max={20}></input> : character.level}</td>
+      <td className='Account-button' onClick={modifyMode ? saveChanges : toggleModify}>
+        {modifyMode ? 'Save' : 'Modify'}
+      </td>
     </tr>
   )
 }
@@ -89,19 +149,11 @@ const AddCharacter = ({ hideModal }) => {
         <button onClick={createCharacter} disabled={characterNames.includes(charName) || charName.length === 0}>
           Save
         </button>
-        {characterNames.includes(charName) && <div>Character name must be unique</div>}
-        {charName.length === 0 && <div>Character must have a name</div>}
+        {characterNames.includes(charName) && <div className='CharacterManager-form-invalid'>Character name must be unique</div>}
+        {charName.length === 0 && <div className='CharacterManager-form-invalid'>Character must have a name</div>}
       </form>
     </div>
   )
-}
-
-const DeleteCharacter = () => {
-  return <div></div>
-}
-
-const EditCharacter = () => {
-  return <div></div>
 }
 
 const CharacterManager = () => {
