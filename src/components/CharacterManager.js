@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { CREATE_CHARACTER } from '../redux/actionTypes'
+import firebase, { db } from '../firebaseConfig'
 import './CharacterManager.css'
-import { create } from 'domain'
 
-// TODO: Sanitize user input
 const CharacterRows = ({ characterArray }) => {
   return characterArray.map(character => <CharacterRow key={character.name} character={character} />)
 }
@@ -26,16 +26,18 @@ const Modal = ({ hideModal, Content }) => {
         <span className='CharacterManager-modal-close' onClick={hideModal}>
           &times;
         </span>
-        <Content />
+        <Content hideModal={hideModal} />
       </div>
     </div>
   )
 }
 
-const AddCharacter = () => {
+const AddCharacter = ({ hideModal }) => {
   const [charName, setCharName] = useState('')
   const [charClass, setCharClass] = useState('Druid')
   const [charLevel, setCharLevel] = useState(1)
+  const user = useSelector(state => state.user)
+  const dispatch = useDispatch()
 
   const classes = ['Druid', 'Wizard', 'Sorcerer', 'Cleric', 'Paladin', 'Ranger', 'Ritual Caster', 'Bard', 'Warlock']
 
@@ -54,20 +56,22 @@ const AddCharacter = () => {
     setCharLevel(event.target.value)
   }
 
-  // TODO: Add character
-  const createCharacter = () => {
-    console.log(charName)
-    console.log(charClass)
-    console.log(charLevel)
+  const createCharacter = async () => {
+    const newChar = { name: charName, class: charClass, level: charLevel }
+    await dispatch({ type: CREATE_CHARACTER, payload: newChar })
+
+    const userDoc = db.collection('users').doc(user.uid)
+    userDoc.update({ characters: firebase.firestore.FieldValue.arrayUnion(newChar) })
+    hideModal()
   }
 
   return (
     <div>
-      <form className='CharacterManager-modal-form'>
+      <form onSubmit={e => e.preventDefault()} className='CharacterManager-modal-form'>
+        <h2>Create a New Character</h2>
         <label>
-          Name: <input onChange={nameChange} type='text' placeholder="Enter your character's name here" required />
+          Name: <input onChange={nameChange} type='text' required />
         </label>
-        <br />
         <label>
           Class:{' '}
           <select onChange={classChange}>
@@ -78,11 +82,9 @@ const AddCharacter = () => {
             ))}
           </select>
         </label>
-        <br />
         <label>
           Level: <input onChange={levelChange} type='number' defaultValue={1} min={1} max={20}></input>
         </label>
-        <br />
         <button onClick={createCharacter}>Save</button>
       </form>
     </div>
@@ -106,7 +108,7 @@ const CharacterManager = () => {
       <table className='CharacterManager-table'>
         <tbody>
           <tr>
-            <th>Name</th>
+            <th onClick={() => console.log(characters)}>Name</th>
             <th>Class</th>
             <th>Level</th>
             <th> </th>
