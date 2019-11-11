@@ -1,5 +1,10 @@
 import React from 'react'
-import { login, logout, fetchCharacters, clearCharacters } from '../redux/actions'
+import {
+  login,
+  logout,
+  fetchCharacters,
+  clearCharacters
+} from '../redux/actions'
 import { auth, provider, db } from '../firebaseConfig'
 import { useSelector, useDispatch } from 'react-redux'
 import './AccountGreeting.css'
@@ -32,15 +37,9 @@ const AccountGreeting = ({ loggingIn, setLoggingIn }) => {
         if (doc.exists) {
           // if user already has an account, load characters into store
           if (doc.get('characters')) {
+            let characters = doc.get('characters')
+            characters[0] = { ...characters[0], selected: true }
             dispatch(fetchCharacters(doc.get('characters')))
-          }
-
-          // new user, create empty array of characters, load empty array into store
-          else {
-            // db.collection('users')
-            //   .doc(loggedinUser.uid)
-            //   .set({ characters: [] })
-            // dispatch(fetchCharacters([]))
           }
         }
 
@@ -68,12 +67,12 @@ const AccountGreeting = ({ loggingIn, setLoggingIn }) => {
     dispatch(clearCharacters())
   }
   return (
-    <div className='Account-greeting'>
+    <div className="Account-greeting">
       {loggingIn && <div>Logging In...</div>}
       {user && !loggingIn && (
         <div>
           Welcome, {user.name} (
-          <span className='Account-button' onClick={signOut}>
+          <span className="Account-button" onClick={signOut}>
             Sign Out
           </span>
           )
@@ -82,7 +81,7 @@ const AccountGreeting = ({ loggingIn, setLoggingIn }) => {
       {!user && !loggingIn && (
         <div>
           Welcome, stranger.{' '}
-          <span className='Account-button' onClick={signIn}>
+          <span className="Account-button" onClick={signIn}>
             Sign In or Create Account
           </span>{' '}
           to access this page's features.
