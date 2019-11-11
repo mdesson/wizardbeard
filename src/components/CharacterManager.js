@@ -18,7 +18,7 @@ const CharacterRow = ({ character }) => {
 
   // Data
   const user = useSelector(state => state.user)
-  const characterNames = useSelector(state => state.characters).map(char => char.name)
+  const characterNames = useSelector(state => state.characters).map(char => char.name) // TODO: Add modification validation
   const dispatch = useDispatch()
   const classes = ['Druid', 'Wizard', 'Sorcerer', 'Cleric', 'Paladin', 'Ranger', 'Ritual Caster', 'Bard', 'Warlock']
 
