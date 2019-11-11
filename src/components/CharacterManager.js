@@ -187,7 +187,7 @@ const AddCharacter = ({ hideModal }) => {
         <label>
           Level: <input onChange={levelChange} type='number' defaultValue={1}></input>
         </label>
-        <button onClick={saveCharacter} disabled={characterNames.includes(charName) || charName.length === 0}>
+        <button onClick={saveCharacter} disabled={characterNames.includes(charName) || charName.length === 0 || charLevel < 1 || charLevel > 20}>
           Save
         </button>
         {characterNames.includes(charName) && <div className='CharacterManager-form-invalid'>Character name must be unique</div>}
