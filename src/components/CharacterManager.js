@@ -90,12 +90,14 @@ const CharacterRow = ({ character }) => {
         )}
       </td>
       <td>{modifyMode ? <input onChange={levelChange} type='number' defaultValue={character.level} min={1} max={20}></input> : character.level}</td>
-      {!deleteMode && (
+      {!deleteMode ? (
         <td className='Account-button' onClick={modifyMode ? saveChanges : toggleModify}>
           {modifyMode ? 'Save' : 'Modify'}
         </td>
+      ) : (
+        <td> </td>
       )}
-      {!modifyMode && (
+      {!modifyMode ? (
         <td className='Account-button'>
           {deleteMode ? (
             <span>
@@ -105,6 +107,8 @@ const CharacterRow = ({ character }) => {
             <span onClick={toggleDelete}>Delete</span>
           )}
         </td>
+      ) : (
+        <td> </td>
       )}
     </tr>
   )
