@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import SpellList from './views/SpellList.js'
 import Account from './views/Account'
+import SpellBook from './views/SpellBook'
 import './App.css'
 
 // TODO: Pages are Spell List, My Spellbook, Account
@@ -21,8 +22,11 @@ function App() {
           <Link className='App-menu-item' to='/'>
             Spell List
           </Link>
+          <Link className='App-menu-item' to='/spellbook'>
+            My Spell Book
+          </Link>
           <Link className='App-menu-item' to='/account'>
-            Account
+            My Account
           </Link>
         </div>
 
@@ -32,6 +36,9 @@ function App() {
         <Switch>
           <Route path='/account'>
             <Account />
+          </Route>
+          <Route path='/spellbook'>
+            <SpellBook />
           </Route>
           <Route path='/'>
             <SpellList />
