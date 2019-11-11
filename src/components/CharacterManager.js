@@ -202,7 +202,7 @@ const CharacterManager = () => {
             <th> </th>
             <th> </th>
           </tr>
-          {characters.length && <CharacterRows characterArray={characters} />}
+          {characters.length !== 0 && <CharacterRows characterArray={characters} />}
         </tbody>
       </table>
       {!characters.length && <div className='CharacterManager-message'>You haven't created any characters. Use the button below to get started!</div>}

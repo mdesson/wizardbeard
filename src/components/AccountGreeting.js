@@ -37,17 +37,20 @@ const AccountGreeting = ({ loggingIn, setLoggingIn }) => {
 
           // new user, create empty array of characters, load empty array into store
           else {
-            db.collection('users')
-              .doc(loggedinUser.uid)
-              .set({ characters: [] })
-
-            dispatch(fetchCharacters([]))
+            // db.collection('users')
+            //   .doc(loggedinUser.uid)
+            //   .set({ characters: [] })
+            // dispatch(fetchCharacters([]))
           }
         }
 
-        // error, user does not exist
+        // new user, create empty array of characters, load empty array into store
         else {
-          console.error('ERROR: No such user, sign in workflow error.')
+          db.collection('users')
+            .doc(loggedinUser.uid)
+            .set({ characters: [] })
+
+          dispatch(fetchCharacters([]))
         }
       })
       .catch(error => console.log(error))
