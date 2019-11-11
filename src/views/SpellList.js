@@ -4,7 +4,7 @@ import axios from 'axios'
 import Card from '../components/Card.js'
 import SpellFilter from '../components/SpellFilter.js'
 import './SpellList.css'
-import { LOAD_ALL_SPELLS, SET_FILTERED_SPELLS } from '../redux/actionTypes'
+import { loadAllSpells, setFilteredSpells } from '../redux/actions'
 
 // TODO: Add filtering and card support for class
 const SpellList = () => {
@@ -25,8 +25,8 @@ const SpellList = () => {
         return { ...spell, classes: spell.dnd_class.split(', ') }
       })
 
-      dispatch({ type: LOAD_ALL_SPELLS, payload: allSpells })
-      dispatch({ type: SET_FILTERED_SPELLS, payload: allSpells })
+      dispatch(loadAllSpells(allSpells))
+      dispatch(setFilteredSpells(allSpells))
 
       setIsLoading(false)
     }

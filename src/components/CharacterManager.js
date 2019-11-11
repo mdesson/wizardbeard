@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { CREATE_CHARACTER, UPDATE_CHARACTER } from '../redux/actionTypes'
-import { deleteCharacter } from '../redux/actions'
+import { createCharacter, updateCharacter, deleteCharacter } from '../redux/actions'
 import firebase, { db } from '../firebaseConfig'
 import './CharacterManager.css'
 
@@ -46,7 +45,7 @@ const CharacterRow = ({ character }) => {
     const updatedChar = { name: charName, class: charClass, level: charLevel }
 
     // update store
-    dispatch({ type: UPDATE_CHARACTER, payload: updatedChar, remove: character })
+    dispatch(updateCharacter({ newChar: updatedChar, oldChar: character }))
 
     // user's document on firestore
     const userDoc = db.collection('users').doc(user.uid)
@@ -91,18 +90,22 @@ const CharacterRow = ({ character }) => {
         )}
       </td>
       <td>{modifyMode ? <input onChange={levelChange} type='number' defaultValue={character.level} min={1} max={20}></input> : character.level}</td>
-      <td className='Account-button' onClick={modifyMode ? saveChanges : toggleModify}>
-        {modifyMode ? 'Save' : 'Modify'}
-      </td>
-      <td className='Account-button'>
-        {deleteMode ? (
-          <span>
-            <span onClick={confirmDelete}>Confirm</span> / <span onClick={toggleDelete}>Cancel</span>
-          </span>
-        ) : (
-          <span onClick={toggleDelete}>Delete</span>
-        )}
-      </td>
+      {!deleteMode && (
+        <td className='Account-button' onClick={modifyMode ? saveChanges : toggleModify}>
+          {modifyMode ? 'Save' : 'Modify'}
+        </td>
+      )}
+      {!modifyMode && (
+        <td className='Account-button'>
+          {deleteMode ? (
+            <span>
+              <span onClick={confirmDelete}>Confirm</span> / <span onClick={toggleDelete}>Cancel</span>
+            </span>
+          ) : (
+            <span onClick={toggleDelete}>Delete</span>
+          )}
+        </td>
+      )}
     </tr>
   )
 }
@@ -145,9 +148,9 @@ const AddCharacter = ({ hideModal }) => {
     setCharLevel(event.target.value)
   }
 
-  const createCharacter = async () => {
+  const saveCharacter = async () => {
     const newChar = { name: charName, class: charClass, level: charLevel }
-    await dispatch({ type: CREATE_CHARACTER, payload: newChar })
+    await dispatch(createCharacter(newChar))
 
     const userDoc = db.collection('users').doc(user.uid)
     userDoc.update({ characters: firebase.firestore.FieldValue.arrayUnion(newChar) })
@@ -174,7 +177,7 @@ const AddCharacter = ({ hideModal }) => {
         <label>
           Level: <input onChange={levelChange} type='number' defaultValue={1} min={1} max={20}></input>
         </label>
-        <button onClick={createCharacter} disabled={characterNames.includes(charName) || charName.length === 0}>
+        <button onClick={saveCharacter} disabled={characterNames.includes(charName) || charName.length === 0}>
           Save
         </button>
         {characterNames.includes(charName) && <div className='CharacterManager-form-invalid'>Character name must be unique</div>}
@@ -196,6 +199,7 @@ const CharacterManager = () => {
             <th>Name</th>
             <th>Class</th>
             <th>Level</th>
+            <th> </th>
             <th> </th>
           </tr>
           {characters.length && <CharacterRows characterArray={characters} />}

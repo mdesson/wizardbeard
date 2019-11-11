@@ -1,5 +1,5 @@
 import React from 'react'
-import { LOGIN, LOGOUT, FETCH_CHARACTERS, CLEAR_CHARACTERS } from '../redux/actionTypes'
+import { login, logout, fetchCharacters, clearCharacters } from '../redux/actions'
 import { auth, provider, db } from '../firebaseConfig'
 import { useSelector, useDispatch } from 'react-redux'
 import './AccountGreeting.css'
@@ -19,7 +19,7 @@ const AccountGreeting = ({ loggingIn, setLoggingIn }) => {
 
     // Get logged in user's data and put in store
     const loggedinUser = auth.currentUser
-    dispatch({ type: LOGIN, payload: { name: loggedinUser.displayName, uid: loggedinUser.uid } })
+    dispatch(login({ name: loggedinUser.displayName, uid: loggedinUser.uid }))
 
     // fetch user's record from firestore
     const userDoc = db.collection('users').doc(loggedinUser.uid)
@@ -32,7 +32,7 @@ const AccountGreeting = ({ loggingIn, setLoggingIn }) => {
         if (doc.exists) {
           // if user already has an account, load characters into store
           if (doc.get('characters')) {
-            dispatch({ type: FETCH_CHARACTERS, payload: doc.get('characters') })
+            dispatch(fetchCharacters(doc.get('characters')))
           }
 
           // new user, create empty array of characters, load empty array into store
@@ -41,7 +41,7 @@ const AccountGreeting = ({ loggingIn, setLoggingIn }) => {
               .doc(loggedinUser.uid)
               .set({ characters: [] })
 
-            dispatch({ type: FETCH_CHARACTERS, payload: [] })
+            dispatch(fetchCharacters([]))
           }
         }
 
@@ -61,8 +61,8 @@ const AccountGreeting = ({ loggingIn, setLoggingIn }) => {
       console.error('ERROR ON SIGNOUT:' + error)
     })
     // clear user data from redux
-    dispatch({ type: LOGOUT })
-    dispatch({ type: CLEAR_CHARACTERS })
+    dispatch(logout())
+    dispatch(clearCharacters())
   }
   return (
     <div className='Account-greeting'>
