@@ -39,14 +39,19 @@
   flex-direction: row;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  margin-right: 10%;
+  margin-left: 10%;
   margin-bottom: 5px;
 }
 
 .App-menu-item {
   text-decoration: none;
   font-family: 'Goudy Bookletter 1911', 'serif';
+  font-size: calc(10px + 1vmin);
   color: white;
   text-align: center;
   padding-left: 3px;
   padding-right: 3px;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
