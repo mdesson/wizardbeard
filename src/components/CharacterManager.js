@@ -172,7 +172,7 @@ const AddCharacter = ({ hideModal }) => {
       <form onSubmit={e => e.preventDefault()} className='CharacterManager-modal-form'>
         <h2>Create a New Character</h2>
         <label>
-          Name: <input onChange={nameChange} type='text' required />
+          Name: <input onChange={nameChange} type='text' />
         </label>
         <label>
           Class:{' '}
@@ -185,13 +185,14 @@ const AddCharacter = ({ hideModal }) => {
           </select>
         </label>
         <label>
-          Level: <input onChange={levelChange} type='number' defaultValue={1} min={1} max={20}></input>
+          Level: <input onChange={levelChange} type='number' defaultValue={1}></input>
         </label>
         <button onClick={saveCharacter} disabled={characterNames.includes(charName) || charName.length === 0}>
           Save
         </button>
         {characterNames.includes(charName) && <div className='CharacterManager-form-invalid'>Character name must be unique</div>}
         {charName.length === 0 && <div className='CharacterManager-form-invalid'>Character must have a name</div>}
+        {(charLevel < 1 || charLevel > 20) && <div className='CharacterManager-form-invalid'>Level must be between 1 and 20</div>}
       </form>
     </div>
   )
