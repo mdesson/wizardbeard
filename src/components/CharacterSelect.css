@@ -1,0 +1,31 @@
+.character-select-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.character {
+  text-decoration: none;
+  font-family: 'Goudy Bookletter 1911', 'serif';
+  font-size: calc(10px + 1vmin);
+  color: white;
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  cursor: pointer;
+}
+
+.character-selected {
+  font-weight: bold;
+  font-family: 'Goudy Bookletter 1911', 'serif';
+  font-size: calc(10px + 1vmin);
+  color: rgb(150, 22, 237);
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}

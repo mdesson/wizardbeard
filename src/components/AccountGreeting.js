@@ -39,7 +39,7 @@ const AccountGreeting = ({ loggingIn, setLoggingIn }) => {
           if (doc.get('characters')) {
             let characters = doc.get('characters')
             characters[0] = { ...characters[0], selected: true }
-            dispatch(fetchCharacters(doc.get('characters')))
+            dispatch(fetchCharacters(characters))
           }
         }
 
