@@ -4,7 +4,8 @@ import './Card.css'
 
 const Card = ({ spell }) => {
   const [showFullDesc, setShowFulLDesc] = useState(false)
-  const shortDesc = spell.desc.split('.')[0] + '.' + spell.desc.split('.')[1] + '.'
+  const shortDesc =
+    spell.desc.split('.')[0] + '.' + spell.desc.split('.')[1] + '.'
   const fullDesc = marked(spell.desc)
 
   const showHideDesc = () => setShowFulLDesc(!showFullDesc)
@@ -21,8 +22,12 @@ const Card = ({ spell }) => {
           <div className="Card-cast-time">{spell.casting_time}</div>
           <div className="Card-duration">{spell.duration}</div>
           <div className="Card-range">{spell.range}</div>
-          {spell.concentration === 'yes' && <div className="Card-concentration">Concentration</div>}
-          {spell.ritual === 'yes' && <div className="Card-concentration">Ritual</div>}
+          {spell.concentration === 'yes' && (
+            <div className="Card-concentration">Concentration</div>
+          )}
+          {spell.ritual === 'yes' && (
+            <div className="Card-concentration">Ritual</div>
+          )}
         </div>
         <div
           className="Card-description"
@@ -30,11 +35,18 @@ const Card = ({ spell }) => {
             __html: showFullDesc ? fullDesc : shortDesc
           }}
         />
-        {showFullDesc && spell.higher_level !== '' && <div className="Card-higher-level">{spell.higher_level}</div>}
-        <div className="Card-class">{spell.dnd_class}</div>
+        {showFullDesc && spell.higher_level !== '' && (
+          <div className="Card-higher-level">{spell.higher_level}</div>
+        )}
       </div>
-      <div className="Show-hide" onClick={showHideDesc}>
-        {showFullDesc ? 'Show less' : 'Show more'}
+      <div>
+        <div className="Card-footer">
+          <div className="Card-class">{spell.dnd_class}</div>
+          <div className="Card-spell-known-status">📘</div>
+        </div>
+        <div className="Show-hide" onClick={showHideDesc}>
+          {showFullDesc ? 'Show less' : 'Show more'}
+        </div>
       </div>
     </div>
   )

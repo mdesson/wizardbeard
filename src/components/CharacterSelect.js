@@ -11,15 +11,12 @@ const CharacterSelect = () => {
     const allCharacters = characters.map(char =>
       name === char.name
         ? {
-            name: char.name,
-            level: char.level,
-            class: char.class,
+            ...char,
             selected: true
           }
         : {
-            name: char.name,
-            level: char.level,
-            class: char.class
+            ...char,
+            selected: false
           }
     )
     dispatch(updateAllCharacters(allCharacters))

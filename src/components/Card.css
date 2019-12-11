@@ -40,9 +40,19 @@
   flex-wrap: wrap;
 }
 
+.Card-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .Card-class {
-  text-align: left;
   font-style: italic;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.Card-spell-known-status {
   margin-bottom: 10px;
   margin-top: 10px;
 }
@@ -52,32 +62,4 @@
   font-weight: bold;
   text-align: center;
   margin-top: 5px;
-}
-
-.Card-level {
-  /* none for now */
-}
-
-.Card-cast-time {
-  /* none for now */
-}
-
-.Card-duration {
-  /* none for now */
-}
-
-.Card-range {
-  /* none for now */
-}
-
-.Card-concentration {
-  /* none for now */
-}
-
-.Card-description {
-  /* none for now */
-}
-
-.Card-higher-level {
-  /* none for now */
 }
