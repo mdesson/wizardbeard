@@ -42,7 +42,8 @@ const Card = ({ spell }) => {
       <div>
         <div className="Card-footer">
           <div className="Card-class">{spell.dnd_class}</div>
-          <div className="Card-spell-known-status">📘</div>
+          <div>📘</div>
+          {/* TODO: Different book colours if known. Update with server and redux. Add alt text */}
         </div>
         <div className="Show-hide" onClick={showHideDesc}>
           {showFullDesc ? 'Show less' : 'Show more'}
