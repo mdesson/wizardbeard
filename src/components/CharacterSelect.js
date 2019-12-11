@@ -1,25 +1,28 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateCharacter } from '../redux/actions'
+import { updateAllCharacters } from '../redux/actions'
 import './CharacterSelect.css'
 const CharacterSelect = () => {
   const characters = useSelector(state => state.characters)
   const dispatch = useDispatch()
 
   const selectCharacter = name => {
-    // Deselect selected character
-    let oldChar = characters.find(char => char.selected)
-    let newChar = {
-      name: oldChar.name,
-      level: oldChar.level,
-      class: oldChar.class
-    }
-    dispatch(updateCharacter({ oldChar: oldChar, newChar: newChar }))
-
-    // Mark clicked character as selected
-    oldChar = characters.find(char => char.name === name)
-    newChar = { ...oldChar, selected: true }
-    dispatch(updateCharacter({ oldChar: oldChar, newChar: newChar }))
+    // Remove selected from characters and add to newly select character
+    const allCharacters = characters.map(char =>
+      name === char.name
+        ? {
+            name: char.name,
+            level: char.level,
+            class: char.class,
+            selected: true
+          }
+        : {
+            name: char.name,
+            level: char.level,
+            class: char.class
+          }
+    )
+    dispatch(updateAllCharacters(allCharacters))
   }
   return (
     <div className="character-select-container">

@@ -8,7 +8,8 @@ import {
   CREATE_CHARACTER,
   DELETE_CHARACTER,
   CLEAR_CHARACTERS,
-  UPDATE_CHARACTER
+  UPDATE_CHARACTER,
+  UPDATE_ALL_CHARACTERS
 } from './actionTypes'
 
 export const loadAllSpells = content => ({
@@ -42,6 +43,11 @@ export const fetchCharacters = content => ({
 
 export const createCharacter = content => ({
   type: CREATE_CHARACTER,
+  payload: content
+})
+
+export const updateAllCharacters = content => ({
+  type: UPDATE_ALL_CHARACTERS,
   payload: content
 })
 
