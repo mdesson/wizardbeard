@@ -1,14 +1,99 @@
 import React, { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import marked from 'marked'
 import './Card.css'
+import { updateAllCharacters } from '../redux/actions'
 
 const Card = ({ spell }) => {
   const [showFullDesc, setShowFullDesc] = useState(false)
+  const [spellStatus, setSpellStatus] = useState(false)
+  const characters = useSelector(state => state.characters)
+  const dispatch = useDispatch()
+
   const shortDesc =
     spell.desc.split('.')[0] + '.' + spell.desc.split('.')[1] + '.'
   const fullDesc = marked(spell.desc)
 
   const showHideDesc = () => setShowFullDesc(!showFullDesc)
+
+  const toggleSpell = () => {
+    // TODO: Set loading
+    // TODO: Update firebase
+
+    let character = characters.find(char => char.selected)
+
+    // if character has no spells
+    if (!character.spells) {
+      // set up spell hierarchy, add spell
+      character = {
+        ...character,
+        spells: { known: [spell.name], prepared: [] }
+      }
+      // if spell known, prepare it
+    } else if (character.spells.prepared.includes(spell.name)) {
+      character.spells.prepared = character.spells.prepared.filter(
+        spellName => spellName !== spell.name
+      )
+    }
+    // if spell prepared, unprepare it
+    else if (character.spells.known.includes(spell.name)) {
+      // add to prepared
+      character.spells.prepared = [...character.spells.prepared, spell.name]
+    }
+
+    // spell is unknown, learn it
+    else {
+      character.spells.known = [...character.spells.known, spell.name]
+    }
+
+    // dispatch to store
+    dispatch(
+      updateAllCharacters(
+        characters.map(char =>
+          char.name === character.name ? character : char
+        )
+      )
+    )
+
+    // update UI with new status
+    updateStatus()
+  }
+
+  const unlearnSpell = () => {
+    // TODO: Set loading
+    // TODO: Update firebase
+
+    let character = characters.find(char => char.selected)
+
+    // remove from known and/or prepared
+    character.spells.known = character.spells.known.filter(
+      spell => spell !== spell.name
+    )
+    character.spells.prepared = character.spells.prepared.filter(
+      spell => spell !== spell.name
+    )
+
+    // update store
+    dispatch(
+      updateAllCharacters(
+        characters.map(char =>
+          char.name === character.name ? character : char
+        )
+      )
+    )
+    console.log('REMOVING SPELL')
+    // update UI with new status
+    updateStatus()
+  }
+
+  const updateStatus = () => {
+    const character = characters.find(char => char.selected)
+    if (character.spells && character.spells.prepared.includes(spell.name))
+      setSpellStatus('prepared')
+    else if (character.spells && character.spells.prepared.includes(spell.name))
+      setSpellStatus('known')
+    else setSpellStatus(false)
+  }
 
   return (
     <div className="Card-container">
@@ -42,8 +127,19 @@ const Card = ({ spell }) => {
       <div>
         <div className="Card-footer">
           <div className="Card-class">{spell.dnd_class}</div>
-          <div>📘</div>
-          {/* TODO: Different book colours if known. Update with server and redux. Add alt text */}
+          {characters &&
+            (spellStatus ? (
+              [
+                <div onClick={toggleSpell} key="status">
+                  {status[spellStatus]}
+                </div>,
+                <div onClick={unlearnSpell} key="remove">
+                  {status.remove}
+                </div>
+              ]
+            ) : (
+              <div onClick={toggleSpell}>{status.add}</div>
+            ))}
         </div>
         <div className="Show-hide" onClick={showHideDesc}>
           {showFullDesc ? 'Show less' : 'Show more'}
@@ -71,5 +167,7 @@ const printLevel = level => {
   if (level === 3) return '3rd level'
   else return level + 'th level'
 }
+
+const status = { prepared: '📖', known: '📕', add: '➕', remove: '✖️' }
 
 export default Card
