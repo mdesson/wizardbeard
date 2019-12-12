@@ -3,12 +3,12 @@ import marked from 'marked'
 import './Card.css'
 
 const Card = ({ spell }) => {
-  const [showFullDesc, setShowFulLDesc] = useState(false)
+  const [showFullDesc, setShowFullDesc] = useState(false)
   const shortDesc =
     spell.desc.split('.')[0] + '.' + spell.desc.split('.')[1] + '.'
   const fullDesc = marked(spell.desc)
 
-  const showHideDesc = () => setShowFulLDesc(!showFullDesc)
+  const showHideDesc = () => setShowFullDesc(!showFullDesc)
 
   return (
     <div className="Card-container">

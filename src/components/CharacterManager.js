@@ -60,7 +60,12 @@ const CharacterRow = ({ character }) => {
 
   const saveChanges = async () => {
     // new character
-    const updatedChar = { name: charName, class: charClass, level: charLevel }
+    const updatedChar = {
+      ...character,
+      name: charName,
+      class: charClass,
+      level: charLevel
+    }
 
     // update store
     dispatch(updateCharacter({ newChar: updatedChar, oldChar: character }))
