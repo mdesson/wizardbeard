@@ -128,19 +128,22 @@ const Card = ({ spell }) => {
       <div>
         <div className="Card-footer">
           <div className="Card-class">{spell.dnd_class}</div>
-          {characters &&
-            (spellStatus ? (
-              [
-                <div onClick={toggleSpell} key="status">
-                  {status[spellStatus]}
-                </div>,
-                <div onClick={unlearnSpell} key="remove">
-                  {status.remove}
-                </div>
-              ]
-            ) : (
-              <div onClick={toggleSpell}>{status.add}</div>
-            ))}
+          <div className="Card-spell-status">
+            {characters &&
+              (spellStatus ? (
+                [
+                  <span onClick={toggleSpell} key="status">
+                    {status[spellStatus]}
+                  </span>,
+                  <span> / </span>,
+                  <span onClick={unlearnSpell} key="remove">
+                    {status.remove}
+                  </span>
+                ]
+              ) : (
+                <div onClick={toggleSpell}>{status.add}</div>
+              ))}
+          </div>
         </div>
         <div className="Show-hide" onClick={showHideDesc}>
           {showFullDesc ? 'Show less' : 'Show more'}

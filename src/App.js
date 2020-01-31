@@ -5,42 +5,40 @@ import Account from './views/Account'
 import SpellBook from './views/SpellBook'
 import './App.css'
 
-// TODO: Pages are Spell List, My Spellbook, Account
-
 function App() {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <span className='Wizard-header' role='img' aria-label='wizard'>
+    <div className="App">
+      <header className="App-header">
+        <span className="Wizard-header" role="img" aria-label="wizard">
           🧙
         </span>
-        <span className='Title-header'>Wizard Beard</span>
+        <span className="Title-header">Wizard Beard</span>
       </header>
       <Router>
         {/* Router Links */}
-        <div className='App-menu'>
-          <Link className='App-menu-item' to='/'>
+        <div className="App-menu">
+          <Link className="App-menu-item" to="/">
             Spell List
           </Link>
-          <Link className='App-menu-item' to='/spellbook'>
+          <Link className="App-menu-item" to="/spellbook">
             My Spell Book
           </Link>
-          <Link className='App-menu-item' to='/account'>
+          <Link className="App-menu-item" to="/account">
             My Account
           </Link>
         </div>
 
-        <div className='Underline'></div>
+        <div className="Underline"></div>
 
         {/* Content and Router Swtich */}
         <Switch>
-          <Route path='/account'>
+          <Route path="/account">
             <Account />
           </Route>
-          <Route path='/spellbook'>
+          <Route path="/spellbook">
             <SpellBook />
           </Route>
-          <Route path='/'>
+          <Route path="/">
             <SpellList />
           </Route>
         </Switch>
