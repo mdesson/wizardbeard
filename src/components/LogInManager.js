@@ -7,9 +7,9 @@ import {
 } from '../redux/actions'
 import { auth, provider, db } from '../firebaseConfig'
 import { useSelector, useDispatch } from 'react-redux'
-import './AccountGreeting.css'
+import './LogInManager.css'
 
-const AccountGreeting = ({ loggingIn, setLoggingIn }) => {
+const LogInManager = ({ loggingIn, setLoggingIn }) => {
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
 
@@ -91,4 +91,4 @@ const AccountGreeting = ({ loggingIn, setLoggingIn }) => {
   )
 }
 
-export default AccountGreeting
+export default LogInManager
