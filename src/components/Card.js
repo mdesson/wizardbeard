@@ -99,8 +99,9 @@ const Card = ({ spell }) => {
     <div className="Card-container">
       <div>
         <div className="Card-title">
-          <span title={spell.school}>{schoolEmojis[spell.school]}</span>
-          <span>{spell.name}</span>
+          <span title={spell.school}>
+            {schoolEmojis[spell.school]} {spell.name}
+          </span>
         </div>
         <div className="Card-stats">
           <div className="Card-level">{printLevel(spell.level_int)}</div>
