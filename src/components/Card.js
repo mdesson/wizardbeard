@@ -4,6 +4,8 @@ import marked from 'marked'
 import './Card.css'
 import { updateAllCharacters } from '../redux/actions'
 
+// TODO: Rewrite known/unknown management. Putting a lot of state in one small component. It doesn't update when you change characters.
+
 const Card = ({ spell }) => {
   const [showFullDesc, setShowFullDesc] = useState(false)
   const [spellStatus, setSpellStatus] = useState(false)
@@ -29,16 +31,19 @@ const Card = ({ spell }) => {
         ...character,
         spells: { known: [spell.name], prepared: [] }
       }
-      // if spell known, prepare it
-    } else if (character.spells.prepared.includes(spell.name)) {
-      character.spells.prepared = character.spells.prepared.filter(
+      // if spell known: add to prepared, remove from known
+    } else if (character.spells.known.includes(spell.name)) {
+      character.spells.prepared = [...character.spells.prepared, spell.name]
+      character.spells.known = character.spells.known.filter(
         spellName => spellName !== spell.name
       )
     }
-    // if spell prepared, unprepare it
-    else if (character.spells.known.includes(spell.name)) {
-      // add to prepared
-      character.spells.prepared = [...character.spells.prepared, spell.name]
+    // if spell prepared: add to known, remove from prepared
+    else if (character.spells.prepared.includes(spell.name)) {
+      character.spells.known = [...character.spells.known, spell.name]
+      character.spells.prepared = character.spells.prepared.filter(
+        spellName => spellName !== spell.name
+      )
     }
 
     // spell is unknown, learn it
@@ -81,7 +86,6 @@ const Card = ({ spell }) => {
         )
       )
     )
-    console.log('REMOVING SPELL')
     // update UI with new status
     updateStatus()
   }
@@ -90,7 +94,7 @@ const Card = ({ spell }) => {
     const character = characters.find(char => char.selected)
     if (character.spells && character.spells.prepared.includes(spell.name))
       setSpellStatus('prepared')
-    else if (character.spells && character.spells.prepared.includes(spell.name))
+    else if (character.spells && character.spells.known.includes(spell.name))
       setSpellStatus('known')
     else setSpellStatus(false)
   }
@@ -136,9 +140,9 @@ const Card = ({ spell }) => {
                     {status[spellStatus]}
                   </span>,
                   <span> / </span>,
-                  <span onClick={unlearnSpell} key="remove">
+                  <div onClick={unlearnSpell} key="remove">
                     {status.remove}
-                  </span>
+                  </div>
                 ]
               ) : (
                 <div onClick={toggleSpell}>{status.add}</div>
