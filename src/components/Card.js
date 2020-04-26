@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import marked from 'marked'
 import './Card.css'
-import { updateAllCharacters } from '../redux/actions'
+import { updateAllCharacters, setFilteredSpells } from '../redux/actions'
 
 // TODO: Rewrite known/unknown management. Putting a lot of state in one small component. It doesn't update when you change characters.
 
 const Card = ({ spell }) => {
   const [showFullDesc, setShowFullDesc] = useState(false)
-  const [spellStatus, setSpellStatus] = useState(false)
+  const [spellStatus, setSpellStatus] = useState('add')
   const characters = useSelector(state => state.characters)
   const dispatch = useDispatch()
 
@@ -61,7 +61,9 @@ const Card = ({ spell }) => {
     )
 
     // update UI with new status
-    updateStatus()
+    if (spellStatus === 'add') setSpellStatus('known')
+    else if (spellStatus === 'known') setSpellStatus('prepared')
+    else setSpellStatus('add')
   }
 
   const unlearnSpell = () => {
@@ -86,17 +88,6 @@ const Card = ({ spell }) => {
         )
       )
     )
-    // update UI with new status
-    updateStatus()
-  }
-
-  const updateStatus = () => {
-    const character = characters.find(char => char.selected)
-    if (character.spells && character.spells.prepared.includes(spell.name))
-      setSpellStatus('prepared')
-    else if (character.spells && character.spells.known.includes(spell.name))
-      setSpellStatus('known')
-    else setSpellStatus(false)
   }
 
   return (
@@ -133,20 +124,9 @@ const Card = ({ spell }) => {
         <div className="Card-footer">
           <div className="Card-class">{spell.dnd_class}</div>
           <div className="Card-spell-status">
-            {characters &&
-              (spellStatus ? (
-                [
-                  <span onClick={toggleSpell} key="status">
-                    {status[spellStatus]}
-                  </span>,
-                  <span> / </span>,
-                  <div onClick={unlearnSpell} key="remove">
-                    {status.remove}
-                  </div>
-                ]
-              ) : (
-                <div onClick={toggleSpell}>{status.add}</div>
-              ))}
+            {characters && (
+              <span onClick={toggleSpell}>{status[spellStatus]}</span>
+            )}
           </div>
         </div>
         <div className="Show-hide" onClick={showHideDesc}>
@@ -176,6 +156,6 @@ const printLevel = level => {
   else return level + 'th level'
 }
 
-const status = { prepared: '📖', known: '📕', add: '➕', remove: '✖️' }
+const status = { prepared: '📖', known: '📕', add: '➕' }
 
 export default Card
