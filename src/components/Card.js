@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import marked from 'marked'
+import _ from 'lodash'
 import './Card.css'
-import { updateAllCharacters, setFilteredSpells } from '../redux/actions'
-
-// TODO: Rewrite known/unknown management. Putting a lot of state in one small component. It doesn't update when you change characters.
+import { updateAllCharacters } from '../redux/actions'
+import firebase, { db } from '../firebaseConfig'
 
 const Card = ({ spell }) => {
   const [showFullDesc, setShowFullDesc] = useState(false)
   const [spellStatus, setSpellStatus] = useState('add')
   const characters = useSelector(state => state.characters)
+  const user = useSelector(state => state.user)
   const dispatch = useDispatch()
 
   const shortDesc =
@@ -18,76 +19,73 @@ const Card = ({ spell }) => {
 
   const showHideDesc = () => setShowFullDesc(!showFullDesc)
 
-  const toggleSpell = () => {
-    // TODO: Set loading
-    // TODO: Update firebase
+  // useEffect hook to update UI with spell's status on current character
+  useEffect(() => {
+    if (characters) {
+      let character = characters.find(char => char.selected)
+      if (!character.spells) setSpellStatus('add')
+      else if (character.spells.known.includes(spell.name))
+        setSpellStatus('known')
+      else if (character.spells.prepared.includes(spell.name))
+        setSpellStatus('prepared')
+      else setSpellStatus('add')
+    }
+  }, [characters, spell.name])
 
-    let character = characters.find(char => char.selected)
+  const toggleSpell = async () => {
+    let updatedChar = characters.find(char => char.selected)
+    let oldChar = _.cloneDeep(updatedChar)
+    delete oldChar.selected
 
     // if character has no spells
-    if (!character.spells) {
+    if (!updatedChar.spells) {
       // set up spell hierarchy, add spell
-      character = {
-        ...character,
+      updatedChar = {
+        ...updatedChar,
         spells: { known: [spell.name], prepared: [] }
       }
-      // if spell known: add to prepared, remove from known
-    } else if (character.spells.known.includes(spell.name)) {
-      character.spells.prepared = [...character.spells.prepared, spell.name]
-      character.spells.known = character.spells.known.filter(
+    }
+    // if spell known: add to prepared, remove from known
+    else if (updatedChar.spells.known.includes(spell.name)) {
+      updatedChar.spells.prepared = [...updatedChar.spells.prepared, spell.name]
+      updatedChar.spells.known = updatedChar.spells.known.filter(
         spellName => spellName !== spell.name
       )
     }
-    // if spell prepared: add to known, remove from prepared
-    else if (character.spells.prepared.includes(spell.name)) {
-      character.spells.known = [...character.spells.known, spell.name]
-      character.spells.prepared = character.spells.prepared.filter(
+    // if spell prepared: unlearn it
+    else if (updatedChar.spells.prepared.includes(spell.name)) {
+      updatedChar.spells.prepared = updatedChar.spells.prepared.filter(
         spellName => spellName !== spell.name
       )
     }
-
     // spell is unknown, learn it
     else {
-      character.spells.known = [...character.spells.known, spell.name]
+      updatedChar.spells.known = [...updatedChar.spells.known, spell.name]
     }
 
     // dispatch to store
     dispatch(
       updateAllCharacters(
         characters.map(char =>
-          char.name === character.name ? character : char
+          char.name === updatedChar.name ? updatedChar : char
         )
       )
     )
 
-    // update UI with new status
-    if (spellStatus === 'add') setSpellStatus('known')
-    else if (spellStatus === 'known') setSpellStatus('prepared')
-    else setSpellStatus('add')
-  }
+    const userDoc = db.collection('users').doc(user.uid)
 
-  const unlearnSpell = () => {
-    // TODO: Set loading
-    // TODO: Update firebase
+    // remove from firestore
+    await userDoc.update({
+      characters: firebase.firestore.FieldValue.arrayRemove(oldChar)
+    })
 
-    let character = characters.find(char => char.selected)
-
-    // remove from known and/or prepared
-    character.spells.known = character.spells.known.filter(
-      spell => spell !== spell.name
-    )
-    character.spells.prepared = character.spells.prepared.filter(
-      spell => spell !== spell.name
-    )
-
-    // update store
-    dispatch(
-      updateAllCharacters(
-        characters.map(char =>
-          char.name === character.name ? character : char
-        )
-      )
-    )
+    // add to firestore
+    await userDoc.update({
+      characters: firebase.firestore.FieldValue.arrayUnion({
+        ...oldChar,
+        spells: updatedChar.spells
+      })
+    })
   }
 
   return (

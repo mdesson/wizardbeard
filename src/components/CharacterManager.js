@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import _ from 'lodash'
 import {
   createCharacter,
   updateCharacter,
@@ -74,11 +75,14 @@ const CharacterRow = ({ character }) => {
     const userDoc = db.collection('users').doc(user.uid)
 
     // remove from firestore
+    let temp = _.cloneDeep(character)
+    delete temp.selected
     await userDoc.update({
       characters: firebase.firestore.FieldValue.arrayRemove(character)
     })
 
     // add to firestore
+    temp = _.cloneDeep(updatedChar)
     await userDoc.update({
       characters: firebase.firestore.FieldValue.arrayUnion(updatedChar)
     })
@@ -95,6 +99,8 @@ const CharacterRow = ({ character }) => {
     const userDoc = db.collection('users').doc(user.uid)
 
     // remove from firestore
+    let temp = _.cloneDeep(character)
+    delete temp.selected
     await userDoc.update({
       characters: firebase.firestore.FieldValue.arrayRemove(character)
     })
