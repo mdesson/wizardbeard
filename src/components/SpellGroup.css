@@ -1,0 +1,20 @@
+.Spell-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.Description-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 1%;
+  margin-bottom: 2%;
+}
+.Group-heading {
+  text-align: center;
+  font-family: Tangerine, serif;
+}
