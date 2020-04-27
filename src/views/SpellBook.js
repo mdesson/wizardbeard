@@ -60,14 +60,14 @@ const SpellBook = () => {
         <CharacterSelect key="select" />,
         <SpellGroup
           title="Prepared Spells"
-          spells={knownSpells}
-          isSearchable={false}
+          spells={preparedSpells}
+          isSearchable={true}
           noSpellsFoundString="You have no spells prepared for the day."
           key="prepared"
         />,
         <SpellGroup
           title="Known Spells"
-          spells={preparedSpells}
+          spells={knownSpells}
           isSearchable={true}
           noSpellsFoundString="You know no unprepared spells."
           key="known"
