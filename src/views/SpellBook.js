@@ -41,13 +41,13 @@ const SpellBook = () => {
 
   return (
     <div className="SpellBook-container">
-      <p className="Description-text">
-        {user
-          ? "Click the book icon to manage your spells. A closed book means you know the spell, and an open book means you've prepared the spell."
-          : 'Create an account in order to create characters and manage their known and prepared spells.'}
-      </p>
       {user && [
         <CharacterSelect key="select" />,
+        <p className="Description-text">
+          {user
+            ? "Click the book icon to manage your spells. A closed book means you know the spell, and an open book means you've prepared the spell."
+            : 'Create an account in order to create characters and manage their known and prepared spells.'}
+        </p>,
         <SpellGroup
           title="Prepared Spells"
           spellStore="preparedspells"
