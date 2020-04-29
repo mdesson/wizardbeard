@@ -1,7 +1,13 @@
 import {
   LOAD_ALL_SPELLS,
-  SET_SPELL_FILTER,
-  SET_FILTERED_SPELLS,
+  LOAD_PREPARED_SPELLS,
+  LOAD_KNOWN_SPELLS,
+  SET_ALL_SPELLS_FILTER,
+  SET_FILTERED_ALL_SPELLS,
+  SET_PREPARED_SPELLS_FILTER,
+  SET_FILTERED_PREPARED_SPELLS,
+  SET_KNOWN_SPELLS_FILTER,
+  SET_FILTERED_KNOWN_SPELLS,
   LOGIN,
   LOGOUT,
   FETCH_CHARACTERS,
@@ -16,14 +22,42 @@ export const loadAllSpells = content => ({
   type: LOAD_ALL_SPELLS,
   payload: content
 })
-
-export const setSpellFilter = content => ({
-  type: SET_SPELL_FILTER,
+export const loadPreparedSpells = content => ({
+  type: LOAD_PREPARED_SPELLS,
+  payload: content
+})
+export const loadKnownSpells = content => ({
+  type: LOAD_KNOWN_SPELLS,
   payload: content
 })
 
-export const setFilteredSpells = content => ({
-  type: SET_FILTERED_SPELLS,
+export const setAllSpellsFilter = content => ({
+  type: SET_ALL_SPELLS_FILTER,
+  payload: content
+})
+
+export const setFilteredAllSpells = content => ({
+  type: SET_FILTERED_ALL_SPELLS,
+  payload: content
+})
+
+export const setPreparedSpellsFilter = content => ({
+  type: SET_PREPARED_SPELLS_FILTER,
+  payload: content
+})
+
+export const setFilteredPreparedSpells = content => ({
+  type: SET_FILTERED_PREPARED_SPELLS,
+  payload: content
+})
+
+export const setKnownSpellsFilter = content => ({
+  type: SET_KNOWN_SPELLS_FILTER,
+  payload: content
+})
+
+export const setFilteredKnownSpells = content => ({
+  type: SET_FILTERED_KNOWN_SPELLS,
   payload: content
 })
 

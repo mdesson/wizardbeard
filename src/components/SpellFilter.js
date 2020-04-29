@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import { useSelector, useDispatch } from 'react-redux'
-import { setSpellFilter, setFilteredSpells } from '../redux/actions'
 
 // create filter for spells, to be passed to filter function
 const makeFilter = results => {
@@ -32,7 +31,11 @@ const filterData = (filter, data) => {
       var spellValue = spell[field]
 
       // eslint-disable-next-line
-      if (Array.isArray(fieldValue) && Array.isArray(spellValue) && !fieldValue.some(c => spellValue.indexOf(c) >= 0)) {
+      if (
+        Array.isArray(fieldValue) &&
+        Array.isArray(spellValue) &&
+        !fieldValue.some(c => spellValue.indexOf(c) >= 0)
+      ) {
         return false
       }
       if (!Array.isArray(spellValue) && !fieldValue.includes(spellValue)) {
@@ -45,8 +48,14 @@ const filterData = (filter, data) => {
   return output
 }
 
-const SpellFilter = ({ spells, onChange }) => {
-  const spellFilter = useSelector(state => state.spellfilter)
+const SpellFilter = ({
+  spells,
+  filterName,
+  setSpellsFunc,
+  setFilterFunc,
+  onChange
+}) => {
+  const spellFilter = useSelector(state => state[filterName])
   const dispatch = useDispatch()
 
   // options, field is included for parsing
@@ -96,11 +105,17 @@ const SpellFilter = ({ spells, onChange }) => {
     },
     {
       label: 'Ritual Spell',
-      options: [{ value: 'yes', label: 'Is Ritual', field: 'ritual' }, { value: 'no', label: 'Not Ritual', field: 'ritual' }]
+      options: [
+        { value: 'yes', label: 'Is Ritual', field: 'ritual' },
+        { value: 'no', label: 'Not Ritual', field: 'ritual' }
+      ]
     },
     {
       label: 'Concentration Spell',
-      options: [{ value: 'yes', label: 'Is Concentration', field: 'concentration' }, { value: 'no', label: 'Not Concentration', field: 'concentration' }]
+      options: [
+        { value: 'yes', label: 'Is Concentration', field: 'concentration' },
+        { value: 'no', label: 'Not Concentration', field: 'concentration' }
+      ]
     },
     {
       label: 'Name',
@@ -131,13 +146,13 @@ const SpellFilter = ({ spells, onChange }) => {
         isMulti
         closeMenuOnSelect={false}
         onChange={selected => {
-          dispatch(setSpellFilter(selected))
-          dispatch(setFilteredSpells(filterData(makeFilter(selected), spells)))
+          dispatch(setFilterFunc(selected))
+          dispatch(setSpellsFunc(filterData(makeFilter(selected), spells)))
         }}
         styles={styles}
         formatGroupLabel={formatGroupLabel}
         options={options}
-        defaultValue={spellFilter}
+        value={spellFilter}
       />
     </div>
   )

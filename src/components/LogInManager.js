@@ -3,7 +3,13 @@ import {
   login,
   logout,
   fetchCharacters,
-  clearCharacters
+  clearCharacters,
+  loadPreparedSpells,
+  loadKnownSpells,
+  setPreparedSpellsFilter,
+  setKnownSpellsFilter,
+  setFilteredKnownSpells,
+  setFilteredPreparedSpells
 } from '../redux/actions'
 import { auth, provider, db } from '../firebaseConfig'
 import { useSelector, useDispatch } from 'react-redux'
@@ -11,6 +17,7 @@ import './LogInManager.css'
 
 const LogInManager = ({ loggingIn, setLoggingIn }) => {
   const user = useSelector(state => state.user)
+  const spells = useSelector(state => state.allspells)
   const dispatch = useDispatch()
 
   const signIn = async () => {
@@ -26,6 +33,9 @@ const LogInManager = ({ loggingIn, setLoggingIn }) => {
     const loggedinUser = auth.currentUser
     dispatch(login({ name: loggedinUser.displayName, uid: loggedinUser.uid }))
 
+    // Declare current character
+    let allCharacters = []
+
     // fetch user's record from firestore
     const userDoc = db.collection('users').doc(loggedinUser.uid)
 
@@ -37,9 +47,9 @@ const LogInManager = ({ loggingIn, setLoggingIn }) => {
         if (doc.exists) {
           // if user already has an account, load characters into store
           if (doc.get('characters')) {
-            let characters = doc.get('characters')
-            characters[0] = { ...characters[0], selected: true }
-            dispatch(fetchCharacters(characters))
+            allCharacters = doc.get('characters')
+            allCharacters[0] = { ...allCharacters[0], selected: true }
+            dispatch(fetchCharacters(allCharacters))
           }
         }
 
@@ -53,6 +63,25 @@ const LogInManager = ({ loggingIn, setLoggingIn }) => {
         }
       })
       .catch(error => console.log(error))
+
+    // Update prepared and known spells
+    let character = allCharacters.find(char => char.selected)
+    if (!character.spells) return
+
+    let known = character.spells.known.map(knownSpell =>
+      spells.find(spell => spell.name === knownSpell)
+    )
+    let prepared = character.spells.prepared.map(knownSpell =>
+      spells.find(spell => spell.name === knownSpell)
+    )
+    dispatch(loadPreparedSpells(prepared))
+    dispatch(loadKnownSpells(known))
+
+    // clear spell filters for known and prepared spells
+    dispatch(setPreparedSpellsFilter([]))
+    dispatch(setKnownSpellsFilter([]))
+    dispatch(setFilteredPreparedSpells(prepared))
+    dispatch(setFilteredKnownSpells(known))
 
     // hide loading message
     setLoggingIn(false)

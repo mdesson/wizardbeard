@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
-import Card from '../components/Card.js'
-import SpellFilter from '../components/SpellFilter.js'
 import CharacterSelect from '../components/CharacterSelect'
 import './SpellList.css'
-import { loadAllSpells, setFilteredSpells } from '../redux/actions'
+import {
+  loadAllSpells,
+  setFilteredAllSpells,
+  setAllSpellsFilter
+} from '../redux/actions'
+import SpellGroup from '../components/SpellGroup.js'
 
 // TODO: Add filtering and card support for class
 const SpellList = () => {
   const spells = useSelector(state => state.allspells)
   const user = useSelector(state => state.user)
-  const filteredSpells = useSelector(state => state.filteredspells)
   const dispatch = useDispatch()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -30,7 +32,7 @@ const SpellList = () => {
       })
 
       dispatch(loadAllSpells(allSpells))
-      dispatch(setFilteredSpells(allSpells))
+      dispatch(setFilteredAllSpells(allSpells))
 
       setIsLoading(false)
     }
@@ -53,16 +55,16 @@ const SpellList = () => {
         <div className="Loading-text">Loading content</div>
       ) : (
         <div>
-          <SpellFilter spells={spells} />
-          <div className="Spell-list">
-            {filteredSpells.length ? (
-              filteredSpells.map(s => <Card key={s.name} spell={s} />)
-            ) : (
-              <div className="Description-text">
-                Alas, such a spell has yet to be crafted.
-              </div>
-            )}
-          </div>
+          <SpellGroup
+            title="debug"
+            isSearchable={true}
+            spellStore="allspells"
+            filteredSpellStore="filteredallspells"
+            filterName="allspellsfilter"
+            setSpellsFunc={setFilteredAllSpells}
+            setFilterFunc={setAllSpellsFilter}
+            noSpellsFoundString="Alas, such a spell has yet to be crafted"
+          />
         </div>
       )}
     </div>
