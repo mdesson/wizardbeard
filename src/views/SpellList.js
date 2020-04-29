@@ -56,7 +56,6 @@ const SpellList = () => {
       ) : (
         <div>
           <SpellGroup
-            title="debug"
             isSearchable={true}
             spellStore="allspells"
             filteredSpellStore="filteredallspells"

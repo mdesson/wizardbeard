@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import AccoutGreeting from '../components/LogInManager'
+import LoginManager from '../components/LogInManager'
 import CharacterManager from '../components/CharacterManager'
 import './Account.css'
 
@@ -10,7 +10,7 @@ const Account = () => {
 
   return (
     <div className="Account-container">
-      <AccoutGreeting loggingIn={loggingIn} setLoggingIn={setLoggingIn} />
+      <LoginManager loggingIn={loggingIn} setLoggingIn={setLoggingIn} />
       {user && !loggingIn && <CharacterManager />}
     </div>
   )

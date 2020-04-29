@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 
 const SpellGroup = ({
   title,
+  description,
   isSearchable,
   spellStore,
   filteredSpellStore,
@@ -19,7 +20,7 @@ const SpellGroup = ({
 
   return (
     <div>
-      <h1 className="Group-heading">{title}</h1>
+      {title && <h1 className="Group-heading">{title}</h1>}
       {isSearchable && (
         <SpellFilter
           spells={spells}

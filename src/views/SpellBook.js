@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -16,7 +16,6 @@ import './SpellBook.css'
 const SpellBook = () => {
   const spells = useSelector(state => state.allspells)
   const user = useSelector(state => state.user)
-  const characters = useSelector(state => state.characters)
   const dispatch = useDispatch()
 
   // If spells have not yet been loaded globally
@@ -42,6 +41,11 @@ const SpellBook = () => {
 
   return (
     <div className="SpellBook-container">
+      <p className="Description-text">
+        {user
+          ? "Click the book icon to manage your spells. A closed book means you know the spell, and an open book means you've prepared the spell."
+          : 'Create an account in order to create characters and manage their known and prepared spells.'}
+      </p>
       {user && [
         <CharacterSelect key="select" />,
         <SpellGroup
