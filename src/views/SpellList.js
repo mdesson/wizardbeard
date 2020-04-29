@@ -50,6 +50,12 @@ const SpellList = () => {
           Welcome to <b>Wizard Beard</b>! The most convenient place on this
           plane to manage your spells!
         </div>
+        {user && (
+          <div>
+            To learn a spell, click the <b>+</b> on the right side of the spell
+            card.
+          </div>
+        )}
       </div>
       {isLoading ? (
         <div className="Loading-text">Loading content</div>
