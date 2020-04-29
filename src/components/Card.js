@@ -3,15 +3,21 @@ import { useSelector, useDispatch } from 'react-redux'
 import marked from 'marked'
 import _ from 'lodash'
 import './Card.css'
-import { updateAllCharacters } from '../redux/actions'
+import {
+  updateAllCharacters,
+  loadPreparedSpells,
+  loadKnownSpells
+} from '../redux/actions'
 import firebase, { db } from '../firebaseConfig'
 
-const Card = ({ spell }) => {
-  const [showFullDesc, setShowFullDesc] = useState(false)
-  const [spellStatus, setSpellStatus] = useState('add')
+const Card = ({ spell, addMode }) => {
   const characters = useSelector(state => state.characters)
+  const spells = useSelector(state => state.allspells)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
+
+  const [showFullDesc, setShowFullDesc] = useState(false)
+  const [spellStatus, setSpellStatus] = useState('add')
 
   const shortDesc =
     spell.desc.split('.')[0] + '.' + spell.desc.split('.')[1] + '.'
@@ -25,12 +31,12 @@ const Card = ({ spell }) => {
       let character = characters.find(char => char.selected)
       if (!character.spells) setSpellStatus('add')
       else if (character.spells.known.includes(spell.name))
-        setSpellStatus('known')
+        setSpellStatus(addMode ? 'added' : 'known')
       else if (character.spells.prepared.includes(spell.name))
-        setSpellStatus('prepared')
+        setSpellStatus(addMode ? 'added' : 'prepared')
       else setSpellStatus('add')
     }
-  }, [characters, spell.name])
+  }, [characters, spell.name, addMode])
 
   const toggleSpell = async () => {
     let updatedChar = characters.find(char => char.selected)
@@ -45,22 +51,44 @@ const Card = ({ spell }) => {
         spells: { known: [spell.name], prepared: [] }
       }
     }
-    // if spell known: add to prepared, remove from known
-    else if (updatedChar.spells.known.includes(spell.name)) {
-      updatedChar.spells.prepared = [...updatedChar.spells.prepared, spell.name]
-      updatedChar.spells.known = updatedChar.spells.known.filter(
-        spellName => spellName !== spell.name
-      )
+    // Add/Remove spell from character
+    else if (addMode) {
+      // spell is known: remove from character
+      if (updatedChar.spells.known.includes(spell.name)) {
+        updatedChar.spells.known = updatedChar.spells.known.filter(
+          spellName => spellName !== spell.name
+        )
+      }
+      // spell is prepared: remove from character
+      else if (updatedChar.spells.prepared.includes(spell.name)) {
+        updatedChar.spells.prepared = updatedChar.spells.prepared.filter(
+          spellName => spellName !== spell.name
+        )
+      }
+      // spell is unknown: add to character
+      else {
+        updatedChar.spells.known = [...updatedChar.spells.known, spell.name]
+      }
     }
-    // if spell prepared: unlearn it
-    else if (updatedChar.spells.prepared.includes(spell.name)) {
-      updatedChar.spells.prepared = updatedChar.spells.prepared.filter(
-        spellName => spellName !== spell.name
-      )
-    }
-    // spell is unknown, learn it
+    // Prepare/Unprepare spell
     else {
-      updatedChar.spells.known = [...updatedChar.spells.known, spell.name]
+      // if spell is known: add to prepared, remove from known
+      if (updatedChar.spells.known.includes(spell.name)) {
+        updatedChar.spells.prepared = [
+          ...updatedChar.spells.prepared,
+          spell.name
+        ]
+        updatedChar.spells.known = updatedChar.spells.known.filter(
+          spellName => spellName !== spell.name
+        )
+      }
+      // if spell is prepared: add to known, remove from prepared
+      else {
+        updatedChar.spells.known = [...updatedChar.spells.known, spell.name]
+        updatedChar.spells.prepared = updatedChar.spells.prepared.filter(
+          spellName => spellName !== spell.name
+        )
+      }
     }
 
     // dispatch to store
@@ -71,6 +99,16 @@ const Card = ({ spell }) => {
         )
       )
     )
+
+    let known = updatedChar.spells.known.map(knownSpell =>
+      spells.find(spell => spell.name === knownSpell)
+    )
+    let prepared = updatedChar.spells.prepared.map(knownSpell =>
+      spells.find(spell => spell.name === knownSpell)
+    )
+
+    dispatch(loadKnownSpells(known))
+    dispatch(loadPreparedSpells(prepared))
 
     const userDoc = db.collection('users').doc(user.uid)
 
@@ -154,6 +192,6 @@ const printLevel = level => {
   else return level + 'th level'
 }
 
-const status = { prepared: '📖', known: '📕', add: '➕' }
+const status = { prepared: '📖', known: '📕', add: '➕', added: '✔️' }
 
 export default Card

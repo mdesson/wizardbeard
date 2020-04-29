@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 
 const SpellGroup = ({
   title,
-  description,
+  addMode,
   isSearchable,
   spellStore,
   filteredSpellStore,
@@ -31,7 +31,9 @@ const SpellGroup = ({
       )}
       <div className="Spell-list">
         {filteredSpells.length ? (
-          filteredSpells.map(s => <Card key={s.name} spell={s} />)
+          filteredSpells.map(s => (
+            <Card addMode={addMode} key={s.name} spell={s} />
+          ))
         ) : (
           <div className="Description-text">{noSpellsFoundString}</div>
         )}
