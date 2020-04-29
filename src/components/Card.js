@@ -6,7 +6,9 @@ import './Card.css'
 import {
   updateAllCharacters,
   loadPreparedSpells,
-  loadKnownSpells
+  loadKnownSpells,
+  setFilteredPreparedSpells,
+  setFilteredKnownSpells
 } from '../redux/actions'
 import firebase, { db } from '../firebaseConfig'
 
@@ -42,6 +44,7 @@ const Card = ({ spell, addMode }) => {
     let updatedChar = characters.find(char => char.selected)
     let oldChar = _.cloneDeep(updatedChar)
     delete oldChar.selected
+    let filterJob = 'remove'
 
     // if character has no spells
     if (!updatedChar.spells) {
@@ -52,7 +55,7 @@ const Card = ({ spell, addMode }) => {
       }
     }
     // Add/Remove spell from character
-    else if (addMode) {
+    if (addMode) {
       // spell is known: remove from character
       if (updatedChar.spells.known.includes(spell.name)) {
         updatedChar.spells.known = updatedChar.spells.known.filter(
@@ -67,12 +70,14 @@ const Card = ({ spell, addMode }) => {
       }
       // spell is unknown: add to character
       else {
+        filterJob = 'add'
         updatedChar.spells.known = [...updatedChar.spells.known, spell.name]
       }
     }
     // Prepare/Unprepare spell
     else {
       // if spell is known: add to prepared, remove from known
+      filterJob = 'prepare'
       if (updatedChar.spells.known.includes(spell.name)) {
         updatedChar.spells.prepared = [
           ...updatedChar.spells.prepared,
@@ -84,6 +89,7 @@ const Card = ({ spell, addMode }) => {
       }
       // if spell is prepared: add to known, remove from prepared
       else {
+        filterJob = 'unprepare'
         updatedChar.spells.known = [...updatedChar.spells.known, spell.name]
         updatedChar.spells.prepared = updatedChar.spells.prepared.filter(
           spellName => spellName !== spell.name
@@ -91,7 +97,7 @@ const Card = ({ spell, addMode }) => {
       }
     }
 
-    // dispatch to store
+    // Add change in users to store
     dispatch(
       updateAllCharacters(
         characters.map(char =>
@@ -100,15 +106,15 @@ const Card = ({ spell, addMode }) => {
       )
     )
 
+    // Add change in known/prepared spells to store
     let known = updatedChar.spells.known.map(knownSpell =>
       spells.find(spell => spell.name === knownSpell)
     )
     let prepared = updatedChar.spells.prepared.map(knownSpell =>
       spells.find(spell => spell.name === knownSpell)
     )
-
-    dispatch(loadKnownSpells(known))
     dispatch(loadPreparedSpells(prepared))
+    dispatch(loadKnownSpells(known))
 
     const userDoc = db.collection('users').doc(user.uid)
 

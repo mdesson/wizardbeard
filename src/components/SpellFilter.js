@@ -58,6 +58,9 @@ const SpellFilter = ({
   const spellFilter = useSelector(state => state[filterName])
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    dispatch(setSpellsFunc(filterData(makeFilter(spellFilter), spells)))
+  }, [spells, dispatch, setSpellsFunc, spellFilter])
   // options, field is included for parsing
   const options = [
     {
