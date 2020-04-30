@@ -1,15 +1,58 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import _ from 'lodash'
 import {
   createCharacter,
   updateCharacter,
-  deleteCharacter
+  deleteCharacter,
+  updateAllCharacters,
+  loadPreparedSpells,
+  loadKnownSpells,
+  setFilteredPreparedSpells,
+  setFilteredKnownSpells,
+  setPreparedSpellsFilter,
+  setKnownSpellsFilter
 } from '../redux/actions'
 import firebase, { db } from '../firebaseConfig'
 import './CharacterManager.css'
 
 const CharacterRows = ({ characterArray }) => {
+  const characters = useSelector(state => state.characters)
+  const spells = useSelector(state => state.allspells)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    let selected = characters.filter(char => char.selected)
+    // ensure at least one character is selected after deletion
+    // check is put here since useSelector doesn't update until confirmDelete finishes running
+    if (characters.length !== 0 && selected.length === 0) {
+      // Set the first character in array as selected
+      let allCharacters = _.cloneDeep(characters)
+      allCharacters[0].selected = true
+      dispatch(updateAllCharacters(allCharacters))
+
+      // clear spell filters for known and prepared spells
+      dispatch(setPreparedSpellsFilter([]))
+      dispatch(setKnownSpellsFilter([]))
+
+      // Update known and prepared spells
+      let character = characters[0]
+      if (!character.spells) return
+
+      let known = character.spells.known.map(knownSpell =>
+        spells.find(spell => spell.name === knownSpell)
+      )
+      let prepared = character.spells.prepared.map(knownSpell =>
+        spells.find(spell => spell.name === knownSpell)
+      )
+      dispatch(loadPreparedSpells(prepared))
+      dispatch(loadKnownSpells(known))
+
+      // clear spell filters for known and prepared spells
+      dispatch(setFilteredPreparedSpells(prepared))
+      dispatch(setFilteredKnownSpells(known))
+    }
+  }, [characters, dispatch, spells])
   return characterArray.map(character => (
     <CharacterRow key={character.name} character={character} />
   ))
@@ -25,10 +68,8 @@ const CharacterRow = ({ character }) => {
 
   // Data
   const user = useSelector(state => state.user)
-  const characterNames = useSelector(state => state.characters).map(
-    char => char.name
-  ) // TODO: Add modification validation
   const dispatch = useDispatch()
+
   const classes = [
     'Druid',
     'Wizard',
