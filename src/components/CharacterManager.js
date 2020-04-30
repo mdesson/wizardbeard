@@ -299,26 +299,28 @@ const CharacterManager = () => {
 
   return (
     <div className="CharacterManager-container">
-      <table className="CharacterManager-table">
-        <tbody>
-          <tr>
-            <th>Name</th>
-            <th>Class</th>
-            <th>Level</th>
-            <th> </th>
-            <th> </th>
-          </tr>
-          {characters.length !== 0 && (
-            <CharacterRows characterArray={characters} />
-          )}
-        </tbody>
-      </table>
-      {!characters.length && (
+      {characters.length === 0 ? (
         <div className="CharacterManager-message">
           You haven't created any characters. Use the button below to get
           started!
         </div>
+      ) : (
+        <table className="CharacterManager-table">
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <th>Class</th>
+              <th>Level</th>
+              <th> </th>
+              <th> </th>
+            </tr>
+            {characters.length !== 0 && (
+              <CharacterRows characterArray={characters} />
+            )}
+          </tbody>
+        </table>
       )}
+
       <div className="Account-button" onClick={() => setShowModal(true)}>
         Add New
       </div>

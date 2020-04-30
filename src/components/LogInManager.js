@@ -52,12 +52,14 @@ const LogInManager = ({ loggingIn, setLoggingIn }) => {
       .then(doc => {
         // if user exists in firestore
         if (doc.exists) {
+          // attempt to fetch characters
+          allCharacters = doc.get('characters')
+
           // if user already has an account, load characters into store
-          if (doc.get('characters')) {
-            allCharacters = doc.get('characters')
+          if (allCharacters && allCharacters.length !== 0) {
             allCharacters[0] = { ...allCharacters[0], selected: true }
             dispatch(fetchCharacters(allCharacters))
-          }
+          } else dispatch(fetchCharacters([]))
         }
 
         // new user, create empty array of characters, load empty array into store
