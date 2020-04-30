@@ -29,6 +29,7 @@ const Card = ({ spell, addMode }) => {
   useEffect(() => {
     if (characters) {
       let character = characters.find(char => char.selected)
+      if (!character) return
       if (!character.spells) setSpellStatus('add')
       else if (character.spells.known.includes(spell.name))
         setSpellStatus(addMode ? 'added' : 'known')
@@ -160,7 +161,7 @@ const Card = ({ spell, addMode }) => {
         <div className="Card-footer">
           <div className="Card-class">{spell.dnd_class}</div>
           <div className="Card-spell-status">
-            {characters && (
+            {characters && characters.length !== 0 && (
               <span onClick={toggleSpell}>{status[spellStatus]}</span>
             )}
           </div>

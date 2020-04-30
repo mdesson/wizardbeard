@@ -30,10 +30,10 @@ const filterData = (filter, data) => {
       var fieldValue = filter[field]
       var spellValue = spell[field]
 
-      // eslint-disable-next-line
       if (
         Array.isArray(fieldValue) &&
         Array.isArray(spellValue) &&
+        // eslint-disable-next-line
         !fieldValue.some(c => spellValue.indexOf(c) >= 0)
       ) {
         return false
