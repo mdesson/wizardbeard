@@ -31,6 +31,13 @@ const LogInManager = ({ loggingIn, setLoggingIn }) => {
 
     // Get logged in user's data and put in store
     const loggedinUser = auth.currentUser
+
+    // check for login failure
+    if (!loggedinUser) {
+      setLoggingIn(false)
+      return
+    }
+
     dispatch(login({ name: loggedinUser.displayName, uid: loggedinUser.uid }))
 
     // Declare current character

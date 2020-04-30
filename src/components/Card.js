@@ -6,9 +6,7 @@ import './Card.css'
 import {
   updateAllCharacters,
   loadPreparedSpells,
-  loadKnownSpells,
-  setFilteredPreparedSpells,
-  setFilteredKnownSpells
+  loadKnownSpells
 } from '../redux/actions'
 import firebase, { db } from '../firebaseConfig'
 
@@ -44,7 +42,6 @@ const Card = ({ spell, addMode }) => {
     let updatedChar = characters.find(char => char.selected)
     let oldChar = _.cloneDeep(updatedChar)
     delete oldChar.selected
-    let filterJob = 'remove'
 
     // if character has no spells
     if (!updatedChar.spells) {
@@ -70,14 +67,12 @@ const Card = ({ spell, addMode }) => {
       }
       // spell is unknown: add to character
       else {
-        filterJob = 'add'
         updatedChar.spells.known = [...updatedChar.spells.known, spell.name]
       }
     }
     // Prepare/Unprepare spell
     else {
       // if spell is known: add to prepared, remove from known
-      filterJob = 'prepare'
       if (updatedChar.spells.known.includes(spell.name)) {
         updatedChar.spells.prepared = [
           ...updatedChar.spells.prepared,
@@ -89,7 +84,6 @@ const Card = ({ spell, addMode }) => {
       }
       // if spell is prepared: add to known, remove from prepared
       else {
-        filterJob = 'unprepare'
         updatedChar.spells.known = [...updatedChar.spells.known, spell.name]
         updatedChar.spells.prepared = updatedChar.spells.prepared.filter(
           spellName => spellName !== spell.name
