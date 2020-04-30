@@ -73,22 +73,22 @@ const LogInManager = ({ loggingIn, setLoggingIn }) => {
 
     // Update prepared and known spells
     let character = allCharacters.find(char => char.selected)
-    if (!character.spells) return
+    if (character && character.spells) {
+      let known = character.spells.known.map(knownSpell =>
+        spells.find(spell => spell.name === knownSpell)
+      )
+      let prepared = character.spells.prepared.map(knownSpell =>
+        spells.find(spell => spell.name === knownSpell)
+      )
+      dispatch(loadPreparedSpells(prepared))
+      dispatch(loadKnownSpells(known))
 
-    let known = character.spells.known.map(knownSpell =>
-      spells.find(spell => spell.name === knownSpell)
-    )
-    let prepared = character.spells.prepared.map(knownSpell =>
-      spells.find(spell => spell.name === knownSpell)
-    )
-    dispatch(loadPreparedSpells(prepared))
-    dispatch(loadKnownSpells(known))
-
-    // clear spell filters for known and prepared spells
-    dispatch(setPreparedSpellsFilter([]))
-    dispatch(setKnownSpellsFilter([]))
-    dispatch(setFilteredPreparedSpells(prepared))
-    dispatch(setFilteredKnownSpells(known))
+      // clear spell filters for known and prepared spells
+      dispatch(setPreparedSpellsFilter([]))
+      dispatch(setKnownSpellsFilter([]))
+      dispatch(setFilteredPreparedSpells(prepared))
+      dispatch(setFilteredKnownSpells(known))
+    }
 
     // hide loading message
     setLoggingIn(false)
