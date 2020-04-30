@@ -78,13 +78,13 @@ const CharacterRow = ({ character }) => {
     let temp = _.cloneDeep(character)
     delete temp.selected
     await userDoc.update({
-      characters: firebase.firestore.FieldValue.arrayRemove(character)
+      characters: firebase.firestore.FieldValue.arrayRemove(temp)
     })
 
     // add to firestore
     temp = _.cloneDeep(updatedChar)
     await userDoc.update({
-      characters: firebase.firestore.FieldValue.arrayUnion(updatedChar)
+      characters: firebase.firestore.FieldValue.arrayUnion(temp)
     })
 
     // end modify mode
@@ -102,7 +102,7 @@ const CharacterRow = ({ character }) => {
     let temp = _.cloneDeep(character)
     delete temp.selected
     await userDoc.update({
-      characters: firebase.firestore.FieldValue.arrayRemove(character)
+      characters: firebase.firestore.FieldValue.arrayRemove(temp)
     })
 
     setDeleteMode(false)
