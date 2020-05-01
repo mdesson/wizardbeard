@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   updateAllCharacters,
@@ -51,7 +52,7 @@ const CharacterSelect = () => {
   }
   return (
     <div className="character-select-container">
-      {characters.map(char => (
+      {_.sortBy(characters, 'name').map(char => (
         <div
           className={char.selected ? 'character-selected' : 'character'}
           onClick={() => !char.selected && selectCharacter(char.name)}

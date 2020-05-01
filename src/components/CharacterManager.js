@@ -52,7 +52,7 @@ const CharacterRows = ({ characterArray }) => {
       dispatch(setFilteredKnownSpells(known))
     }
   }, [characters, dispatch, spells])
-  return characterArray.map(character => (
+  return _.sortBy(characterArray, 'name').map(character => (
     <CharacterRow key={character.name} character={character} />
   ))
 }
