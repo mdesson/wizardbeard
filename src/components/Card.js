@@ -57,7 +57,14 @@ const Card = ({ spell, addMode }) => {
           spellName => spellName !== spell.name
         )
       }
-      // spell is unknown: add to character
+      // spell is unkown cantrip: add to prepared spells
+      else if (spell.level_int === 0) {
+        updatedChar.spells.prepared = [
+          ...updatedChar.spells.prepared,
+          spell.name
+        ]
+      }
+      // spell is unknown and not a cantrip: add to character
       else {
         updatedChar.spells.known = [...updatedChar.spells.known, spell.name]
       }
@@ -156,7 +163,13 @@ const Card = ({ spell, addMode }) => {
           <div className="Card-class">{spell.dnd_class}</div>
           <div className="Card-spell-status">
             {characters && characters.length !== 0 && (
-              <span onClick={toggleSpell}>{status[spellStatus]}</span>
+              <span onClick={toggleSpell}>
+                {spell.level_int === 0 &&
+                spellStatus !== 'add' &&
+                spellStatus !== 'added'
+                  ? ''
+                  : status[spellStatus]}
+              </span>
             )}
           </div>
         </div>
