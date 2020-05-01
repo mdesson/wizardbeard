@@ -104,6 +104,9 @@ const Card = ({ spell, addMode }) => {
 
     const userDoc = db.collection('users').doc(user.uid)
 
+    // Deselect character before updating firebase
+    delete oldChar.selected
+
     // remove from firestore
     await userDoc.update({
       characters: firebase.firestore.FieldValue.arrayRemove(oldChar)
