@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import {
   login,
   logout,
@@ -9,7 +10,9 @@ import {
   setPreparedSpellsFilter,
   setKnownSpellsFilter,
   setFilteredKnownSpells,
-  setFilteredPreparedSpells
+  setFilteredPreparedSpells,
+  loadAllSpells,
+  setFilteredAllSpells
 } from '../redux/actions'
 import { auth, provider, db } from '../firebaseConfig'
 import { useSelector, useDispatch } from 'react-redux'
@@ -74,13 +77,33 @@ const LogInManager = ({ loggingIn, setLoggingIn }) => {
       .catch(error => console.log(error))
 
     // Update prepared and known spells
+    let allSpells = spells
+
+    // if all spells haven't been loaded set them
+    if (allSpells.length === 0) {
+      const result = await axios(
+        'https://api.open5e.com/spells/?format=json&limit=2000'
+      )
+
+      // Set up all spells
+      allSpells = result.data.results.map(spell => {
+        return { ...spell, classes: spell.dnd_class.split(', ') }
+      })
+
+      // dispatch to redux
+      dispatch(loadAllSpells(allSpells))
+      dispatch(setFilteredAllSpells(allSpells))
+    }
+
     let character = allCharacters.find(char => char.selected)
     if (character && character.spells) {
       let known = character.spells.known.map(knownSpell =>
-        spells.find(spell => spell.name === knownSpell)
+        // allSpells used since dispatch won't be complete until after function finishes running
+        allSpells.find(spell => spell.name === knownSpell)
       )
       let prepared = character.spells.prepared.map(knownSpell =>
-        spells.find(spell => spell.name === knownSpell)
+        // allSpells used since dispatch won't be complete until after function finishes running
+        allSpells.find(spell => spell.name === knownSpell)
       )
       dispatch(loadPreparedSpells(prepared))
       dispatch(loadKnownSpells(known))
