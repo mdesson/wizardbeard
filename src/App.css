@@ -53,10 +53,8 @@
 }
 
 .App-menu-item {
-  text-decoration: none;
   font-family: 'Goudy Bookletter 1911', 'serif';
   font-size: calc(10px + 1vmin);
-  color: white;
   text-align: center;
   padding-left: 3px;
   padding-right: 3px;
@@ -72,4 +70,13 @@ footer {
 a {
   color: white;
   text-decoration: none;
+  outline: 0;
+}
+
+a:hover {
+  color: #4289c1;
+}
+
+a:focus {
+  text-decoration: underline;
 }
