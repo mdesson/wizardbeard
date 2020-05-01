@@ -33,7 +33,6 @@ const CharacterSelect = () => {
 
     // Update prepared and known spells
     let character = allCharacters.find(char => char.selected)
-    if (!character.spells) return
 
     let known = character.spells.known.map(knownSpell =>
       spells.find(spell => spell.name === knownSpell)

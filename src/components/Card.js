@@ -30,8 +30,7 @@ const Card = ({ spell, addMode }) => {
     if (characters) {
       let character = characters.find(char => char.selected)
       if (!character) return
-      if (!character.spells) setSpellStatus('add')
-      else if (character.spells.known.includes(spell.name))
+      if (character.spells.known.includes(spell.name))
         setSpellStatus(addMode ? 'added' : 'known')
       else if (character.spells.prepared.includes(spell.name))
         setSpellStatus(addMode ? 'added' : 'prepared')
@@ -44,14 +43,6 @@ const Card = ({ spell, addMode }) => {
     let oldChar = _.cloneDeep(updatedChar)
     delete oldChar.selected
 
-    // if character has no spells
-    if (!updatedChar.spells) {
-      // set up spell hierarchy, add spell
-      updatedChar = {
-        ...updatedChar,
-        spells: { known: [spell.name], prepared: [] }
-      }
-    }
     // Add/Remove spell from character
     if (addMode) {
       // spell is known: remove from character

@@ -37,7 +37,6 @@ const CharacterRows = ({ characterArray }) => {
 
       // Update known and prepared spells
       let character = characters[0]
-      if (!character.spells) return
 
       let known = character.spells.known.map(knownSpell =>
         spells.find(spell => spell.name === knownSpell)
@@ -269,7 +268,12 @@ const AddCharacter = ({ hideModal }) => {
   }
 
   const saveCharacter = async () => {
-    const newChar = { name: charName, class: charClass, level: charLevel }
+    const newChar = {
+      name: charName,
+      class: charClass,
+      level: charLevel,
+      spells: { known: [], prepared: [] }
+    }
     await dispatch(createCharacter(newChar))
 
     const userDoc = db.collection('users').doc(user.uid)
