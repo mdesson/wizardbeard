@@ -43,6 +43,11 @@ function App() {
           </Route>
         </Switch>
       </Router>
+      <footer>
+        <a href="https://github.com/mdesson/wizardbeard">
+          Contact / Privacy Policy / Project Details
+        </a>
+      </footer>
     </div>
   )
 }
